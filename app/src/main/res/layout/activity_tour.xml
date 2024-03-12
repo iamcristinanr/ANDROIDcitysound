@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/fndprofile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/fndprof" />
+
+    <ImageView
+        android:id="@+id/tourImageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@mipmap/default_tour_image" />
+
+    <TextView
+        android:id="@+id/tourNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tour Name"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tourImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description of the tour."
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tourNameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="8dp" />
+
+    <!-- Aquí puedes agregar más detalles del tour como tiempo, distancia, etc. -->
+
+    <Button
+        android:id="@+id/mapsButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Maps"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideButton"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/orange"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="8dp" />
+
+    <Button
+        android:id="@+id/guideButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Meet the Guide"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+        app:layout_constraintStart_toEndOf="@id/mapsButton"
+        app:layout_constraintEnd_toStartOf="@id/pointsOfInterestButton"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/orange"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="8dp" />
+
+    <Button
+        android:id="@+id/pointsOfInterestButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Points of Interest"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+        app:layout_constraintStart_toEndOf="@id/guideButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/orange"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

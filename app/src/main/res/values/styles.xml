@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="title">
+        <item name="color">@color/pink</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+    
+    <style name="subtitle"> 
+    <item name="color">@color/orange</item>
+    <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="text">
+        <item name="color">@color/pink</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="edittext">
+        <item name="color">@color/black</item>
+        <item name="android:textSize">16sp</item>
+
+    </style>
+    <style name="textTittleProfile">
+        <item name="color">@color/white</item>
+        <item name="android:textSize">20sp</item>
+
+    </style>
+    <style name="textBottom">
+        <item name="color">@color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="textDescProfile">
+        <item name="color">@color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>
