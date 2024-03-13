@@ -44,11 +44,15 @@ class Login: AppCompatActivity() {
         }
 
         loginButton.setOnClickListener {
-            val email = emailEditText.text.toString()
-            val password = passwordEditText.text.toString()
+            val intent = Intent(this, Profile::class.java)
+            startActivity(intent)
+            finish()
+
+            //val email = emailEditText.text.toString()
+            //val password = passwordEditText.text.toString()
 //invocamos a la funcion perfomLogin agregada más abajo.
                 // Realizar el inicio de sesión
-            performLogin(email, password)
+            //performLogin(email, password)
         }
 
     }
@@ -71,6 +75,9 @@ class Login: AppCompatActivity() {
                     // Guardar el token de acceso
                     SessionManager.saveAccessToken(this, accessToken)
                     Log.d("Token", "El token de acceso es: $accessToken")
+                    //val intent = Intent(this, Profile::class.java)
+                    //startActivity(intent)
+                    //finish()
                     // El inicio de sesión fue exitoso
                     // AQUI HABRIA QUE Redirigir a la siguiente actividad, etc.redirectToMainActivity()//ActivityProfile(ver)
 
