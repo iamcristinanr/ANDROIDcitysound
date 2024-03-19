@@ -25,7 +25,6 @@ class SearchTour : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_searchtour)
 
-
         cityEditText = findViewById(R.id.editTextCity)
         tourNameEditText = findViewById(R.id.editTextTourName)
         guideNameEditText = findViewById(R.id.editTextGuideName)
@@ -38,6 +37,31 @@ class SearchTour : AppCompatActivity() {
 
             // Aquí debes realizar la búsqueda en la API utilizando los valores ingresados por el usuario
             searchTours(city, tourName, guideName)
+        }
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+            // Manejar las selecciones del menú
+            when (menuItem.itemId) {
+                R.id.nav_search -> {
+                    // No hacer nada si ya estamos en la actividad SearchTour
+                    true
+                }
+                R.id.nav_profile -> {
+                    // Abrir la actividad Profile si no está abierta ya
+                    if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
+                        startActivity(Intent(this, Profile::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+                R.id.nav_logout -> {
+                    // Cerrar sesión
+                    logout()
+                    true
+                }
+                else -> false
+            }
         }
     }
 
@@ -60,38 +84,15 @@ class SearchTour : AppCompatActivity() {
                 Toast.makeText(this, "Error en la búsqueda: ${error.message}", Toast.LENGTH_SHORT).show()
             })
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
-        bottomNavigationView.setOnItemSelectedListener { menuItem ->
-
-            // Manejar las selecciones del menú
-            when (menuItem.itemId) {
-                R.id.nav_search -> {
-                    // Abrir la actividad SearchTour si no está abierta ya
-                    if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
-                        startActivity(Intent(this, SearchTour::class.java))
-                        finish() // Cerrar la actividad actual
-                    }
-                    true
-                }
-                R.id.nav_profile -> {
-                    // Abrir la actividad Profile si no está abierta ya
-                    if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
-                        startActivity(Intent(this, Profile::class.java))
-                        finish() // Cerrar la actividad actual
-                    }
-                    true
-                }
-
-                R.id.nav_logout -> {
-                    // Abrir la actividad HomeActivity
-                    startActivity(Intent(this, SearchTour::class.java))
-                    true
-                }
-
-                else -> false
-            }
-        }
         // Agregar la solicitud a la cola de solicitudes de Volley para que se ejecute
         Volley.newRequestQueue(this).add(request)
+    }
+
+    private fun logout() {
+        // Limpiar el token de acceso al cerrar sesión
+        SessionManager.clearAccessToken(this)
+        // Redirigir al usuario a la pantalla de inicio de sesión
+        startActivity(Intent(this, Login::class.java))
+        finish() // Cerrar la actividad actual
     }
 }

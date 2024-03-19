@@ -14,20 +14,7 @@ import android.content.SharedPreferences
 class Profile: AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var sharedPreferences: SharedPreferences
 
-
-    private fun logout() {
-        // Limpiar el estado de inicio de sesión en SharedPreferences
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("isLoggedIn", false)
-        editor.apply()
-
-        // Redirigir al usuario a la pantalla de inicio de sesión
-        startActivity(Intent(this, Login::class.java))
-        finish() // Cerrar la actividad actual
-        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,5 +74,13 @@ class Profile: AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun logout() {
+        // Limpiar el token de acceso al cerrar sesión
+        SessionManager.clearAccessToken(this)
+        // Redirigir al usuario a la pantalla de inicio de sesión
+        startActivity(Intent(this, Login::class.java))
+        finish() // Cerrar la actividad actual
     }
 }
