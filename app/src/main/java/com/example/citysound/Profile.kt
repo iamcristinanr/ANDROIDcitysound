@@ -6,12 +6,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
 class Profile: AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationView: NavigationView
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +37,9 @@ class Profile: AppCompatActivity() {
             startActivity(intent)
         }
 
-        /*navigationView.setNavigationItemSelectedListener { menuItem ->
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+
             // Manejar las selecciones del menú
             when (menuItem.itemId) {
                 R.id.nav_search -> {
@@ -58,6 +60,6 @@ class Profile: AppCompatActivity() {
 
                 else -> false
             }
-        }*/
+        }
     }
 }

@@ -4,17 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.citysound.databinding.ActivityNavigationBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class Navigation : AppCompatActivity() {
-    private lateinit var binding: ActivityNavigationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityNavigationBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_navigation)
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
+
 
         // Configurar el listener para el NavigationView
-        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
             // Manejar las selecciones del menú
             when (menuItem.itemId) {
                 R.id.nav_search -> {

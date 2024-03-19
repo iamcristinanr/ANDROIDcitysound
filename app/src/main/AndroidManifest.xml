@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CitySound"
         tools:targetApi="31">
+
         <activity
             android:name=".Login"
             android:exported="true">
@@ -60,6 +61,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
 
 
     </application>
