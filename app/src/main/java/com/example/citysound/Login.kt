@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -44,51 +45,55 @@ class Login: AppCompatActivity() {
         }
 
         loginButton.setOnClickListener {
-            val intent = Intent(this, Profile::class.java)
-            startActivity(intent)
-            finish()
-
-            //val email = emailEditText.text.toString()
-            //val password = passwordEditText.text.toString()
-//invocamos a la funcion perfomLogin agregada más abajo.
+            val email = emailEditText.text.toString()
+            val password = passwordEditText.text.toString()
                 // Realizar el inicio de sesión
-            //performLogin(email, password)
+            performLogin(email, password)
         }
 
     }
 
 
     private fun performLogin(email: String, password: String) {
-        val apiUrl = "https://api.escuelajs.co/api/v1/auth/login"
+        val apiUrl = "http://192.168.0.17:8000/auth-token/"
 
 
 //VERIFICAR hacer conversiones de string a JSON que le pasamos a la API
         val jsonBody = JSONObject()
-        jsonBody.put("email", email)
+        //corregir en la api es username pero deberia ser email
+        jsonBody.put("username", email)
         jsonBody.put("password", password)
+
+        Log.d("Request JSON", jsonBody.toString())
 
         val request = JsonObjectRequest(
             Request.Method.POST, apiUrl, jsonBody,
+
+
             { response ->
                 try {
-                    val accessToken = response.getString("access_token")
-                    // Guardar el token de acceso
-                    SessionManager.saveAccessToken(this, accessToken)
-                    Log.d("Token", "El token de acceso es: $accessToken")
-                    //val intent = Intent(this, Profile::class.java)
-                    //startActivity(intent)
-                    //finish()
-                    // El inicio de sesión fue exitoso
-                    // AQUI HABRIA QUE Redirigir a la siguiente actividad, etc.redirectToMainActivity()//ActivityProfile(ver)
-
+                    val accessToken = response.getString("token")
+                    // Verificar si el token de acceso es válido
+                    if (accessToken.isNotEmpty()) {
+                        // Guardar el token de acceso
+                        SessionManager.saveAccessToken(this, accessToken)
+                        Log.d("Token", "El token de acceso es: $accessToken")
+                        // Iniciar la siguiente actividad
+                        val intent = Intent(this, Profile::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        // Mostrar mensaje de error si no se recibió un token válido
+                        Toast.makeText(this, "Token de acceso no válido", Toast.LENGTH_SHORT).show()
+                    }
                 } catch (e: JSONException) {
                     e.printStackTrace()
-                    // Error al analizar la respuesta JSON de la API
+                    Toast.makeText(this, "Credenciales incorrectas. Inténtalo de nuevo.", Toast.LENGTH_SHORT).show()
                 }
             },
             { error ->
                 error.printStackTrace()
-                // Manejar errores de la solicitud HTTP
+                Toast.makeText(this, "Error de conexión. Inténtalo de nuevo más tarde.", Toast.LENGTH_SHORT).show()
             }
         )
 

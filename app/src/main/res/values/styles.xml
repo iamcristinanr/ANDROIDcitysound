@@ -35,4 +35,12 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="popupMenuStyle">@style/PopupMenuOverlay</item>
+    </style>
+
+    <style name="PopupMenuOverlay" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@android:color/white</item>
+    </style>
+
 </resources>

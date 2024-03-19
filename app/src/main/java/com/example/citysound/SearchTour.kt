@@ -17,10 +17,14 @@ class SearchTour : AppCompatActivity() {
     private lateinit var tourNameEditText: EditText
     private lateinit var guideNameEditText: EditText
     private lateinit var searchButton: Button
+    private lateinit var menu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_searchtour)
+
+        menu = Menu(this)
+        menu.setupDrawer()
 
         cityEditText = findViewById(R.id.editTextCity)
         tourNameEditText = findViewById(R.id.editTextTourName)
