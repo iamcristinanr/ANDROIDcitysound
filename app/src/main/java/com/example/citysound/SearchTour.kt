@@ -9,6 +9,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.json.JSONArray
 import org.json.JSONException
 
@@ -17,6 +18,8 @@ class SearchTour : AppCompatActivity() {
     private lateinit var tourNameEditText: EditText
     private lateinit var guideNameEditText: EditText
     private lateinit var searchButton: Button
+
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +60,37 @@ class SearchTour : AppCompatActivity() {
                 Toast.makeText(this, "Error en la búsqueda: ${error.message}", Toast.LENGTH_SHORT).show()
             })
 
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+
+            // Manejar las selecciones del menú
+            when (menuItem.itemId) {
+                R.id.nav_search -> {
+                    // Abrir la actividad SearchTour si no está abierta ya
+                    if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
+                        startActivity(Intent(this, SearchTour::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+                R.id.nav_profile -> {
+                    // Abrir la actividad Profile si no está abierta ya
+                    if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
+                        startActivity(Intent(this, Profile::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+
+                R.id.nav_logout -> {
+                    // Abrir la actividad HomeActivity
+                    startActivity(Intent(this, SearchTour::class.java))
+                    true
+                }
+
+                else -> false
+            }
+        }
         // Agregar la solicitud a la cola de solicitudes de Volley para que se ejecute
         Volley.newRequestQueue(this).add(request)
     }
