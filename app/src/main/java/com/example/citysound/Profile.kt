@@ -5,8 +5,13 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 
 class Profile: AppCompatActivity() {
+
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,5 +36,28 @@ class Profile: AppCompatActivity() {
             val intent = Intent(this, SearchTour::class.java)
             startActivity(intent)
         }
+
+        /*navigationView.setNavigationItemSelectedListener { menuItem ->
+            // Manejar las selecciones del menú
+            when (menuItem.itemId) {
+                R.id.nav_search -> {
+                    // Abrir la actividad HomeActivity
+                    startActivity(Intent(this, SearchTour::class.java))
+                    true
+                }
+                R.id.nav_profile -> {
+                    // Abrir la actividad HomeActivity
+                    startActivity(Intent(this, Profile::class.java))
+                    true
+                }
+                R.id.nav_logout -> {
+                    // Abrir la actividad HomeActivity
+                    startActivity(Intent(this, SearchTour::class.java))
+                    true
+                }
+
+                else -> false
+            }
+        }*/
     }
 }
