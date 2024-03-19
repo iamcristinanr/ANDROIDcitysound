@@ -12,7 +12,6 @@ class Profile: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        val buttonMenu = findViewById<Button>(R.id.buttonMenu)
 
 
         val buttonEditProfile = findViewById<Button>(R.id.buttonEditProfile)

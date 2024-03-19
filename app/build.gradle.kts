@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.example.citysound"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -49,5 +49,5 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("com.android.volley:volley:1.2.1")
-    implementation ("org.jetbrains.kotlin:kotlin-android-extensions:1.6.10")
+
 }
