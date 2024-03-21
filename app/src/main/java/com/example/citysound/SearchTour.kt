@@ -1,17 +1,16 @@
 package com.example.citysound
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.json.JSONArray
 import org.json.JSONException
+
 
 class SearchTour : AppCompatActivity() {
     private lateinit var cityEditText: EditText
@@ -67,22 +66,55 @@ class SearchTour : AppCompatActivity() {
 
     private fun searchTours(city: String, tourName: String, guideName: String) {
         // URL de la API para realizar la búsqueda
-        val apiUrl = "https://tu-api.com/search?city=$city&tourName=$tourName&guideName=$guideName"
+        val apiUrl = "http://192.168.0.17:8000/api/tours/?city=$city&tourName=$tourName&guideName=$guideName"
 
         // Crear una solicitud JSON Array usando Volley
-        val request = JsonArrayRequest(
-            Request.Method.GET, apiUrl, null,
-            Response.Listener<JSONArray> { response ->
-                // Manejar la respuesta de la API aquí
-                // Por ejemplo, puedes procesar los datos de la respuesta y pasarlos a la actividad TourActivity
-                val intent = Intent(this, TourActivity::class.java)
-                // Puedes pasar los datos de la respuesta como extras en el intent si es necesario
-                startActivity(intent)
+        val request = object : JsonArrayRequest(
+            Method.GET, apiUrl, null,
+            { response ->
+                try {
+                    // Manejar la respuesta de la API aquí
+                    val tourList = mutableListOf<Tour>()
+
+                    for (i in 0 until response.length()) {
+                        val tourObject = response.getJSONObject(i)
+                        val tourName = tourObject.getString("name")
+                        val description = tourObject.getString("description")
+                        // Aquí puedes obtener más atributos del objeto tour si es necesario
+
+                        val tour = Tour(tourName, description)
+                        tourList.add(tour)
+                    }
+
+                    // Pasar la lista de tours a la actividad PossibleTours
+                    val intent = Intent(this, PossibleTours::class.java)
+                    intent.putParcelableArrayListExtra("tourList", ArrayList(tourList))
+                    startActivity(intent)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
             },
-            Response.ErrorListener { error ->
+            { error ->
                 // Manejar errores de la solicitud HTTP
                 Toast.makeText(this, "Error en la búsqueda: ${error.message}", Toast.LENGTH_SHORT).show()
-            })
+            }) {
+
+            // Sobreescribir el método getHeaders() para incluir el token de autenticación en las cabeceras de la solicitud
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                // Obtener el token de acceso desde SessionManager
+                val sharedPreferences = getSharedPreferences(SessionManager.PREFS_NAME, Context.MODE_PRIVATE)
+                val accessToken = SessionManager.getAccessToken(sharedPreferences)
+                // Agregar el token de autenticación a las cabeceras si está disponible
+                accessToken?.let {
+                    headers["Authorization"] = "Token $it"
+                }
+                return headers
+            }
+        }
+
+// Agregar la solicitud a la cola de solicitudes de Volley para que se ejecute
+        Volley.newRequestQueue(this).add(request)
 
         // Agregar la solicitud a la cola de solicitudes de Volley para que se ejecute
         Volley.newRequestQueue(this).add(request)

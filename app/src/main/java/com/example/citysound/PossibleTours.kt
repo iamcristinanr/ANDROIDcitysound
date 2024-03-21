@@ -1,6 +1,7 @@
 package com.example.citysound
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,16 +22,15 @@ class PossibleTours : AppCompatActivity() {
         tourAdapter = TourAdapter(this, tourList)
         recyclerView.adapter = tourAdapter
 
-        // Aquí deberías obtener los datos de los tours de la API y agregarlos a tourList
-        // Por ahora, agregaremos algunos datos de ejemplo para mostrar cómo se ve
+        val receivedData = intent.getParcelableArrayListExtra<Tour>("tourList")
 
-        val exampleTour1 = Tour("Tour 1", "Description of Tour 1")
-        val exampleTour2 = Tour("Tour 2", "Description of Tour 2")
-        //val exampleTour1 = Tour("Tour 1", "Description of Tour 1", R.drawable.tour1)
-        //val exampleTour2 = Tour("Tour 2", "Description of Tour 2", R.drawable.tour2)
-
-        tourList.add(exampleTour1)
-        tourList.add(exampleTour2)
+        if (receivedData != null && receivedData.isNotEmpty()) {
+            tourList.addAll(receivedData)
+            tourAdapter.notifyDataSetChanged()
+        } else {
+            // Mostrar un mensaje indicando que no hay tours disponibles
+            Toast.makeText(this, "No hay tours disponibles", Toast.LENGTH_SHORT).show()
+        }
 
         tourAdapter.notifyDataSetChanged()
     }
