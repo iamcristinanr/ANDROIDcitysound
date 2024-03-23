@@ -32,6 +32,6 @@ class PossibleTours : AppCompatActivity() {
             Toast.makeText(this, "No hay tours disponibles", Toast.LENGTH_SHORT).show()
         }
 
-        tourAdapter.notifyDataSetChanged()
+        //tourAdapter.notifyDataSetChanged()
     }
 }

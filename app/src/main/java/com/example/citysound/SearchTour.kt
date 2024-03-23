@@ -2,6 +2,7 @@ package com.example.citysound
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -19,6 +20,7 @@ class SearchTour : AppCompatActivity() {
     private lateinit var searchButton: Button
 
     private lateinit var bottomNavigationView: BottomNavigationView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +68,10 @@ class SearchTour : AppCompatActivity() {
 
     private fun searchTours(city: String, tourName: String, guideName: String) {
         // URL de la API para realizar la búsqueda
-        val apiUrl = "http://192.168.0.17:8000/api/tours/?city=$city&tourName=$tourName&guideName=$guideName"
+        val apiUrl = "http://192.168.0.10:8000/api/tours/?city=$city&tourName=$tourName&guideName=$guideName"
+
+
+
 
         // Crear una solicitud JSON Array usando Volley
         val request = object : JsonArrayRequest(
@@ -85,6 +90,9 @@ class SearchTour : AppCompatActivity() {
                         val tour = Tour(tourName, description)
                         tourList.add(tour)
                     }
+
+                    Log.d("SearchTours", "URL de la API: $apiUrl")
+                    Log.d("SearchTours", "Parámetros de búsqueda - Ciudad: $city, Nombre del tour: $tourName, Nombre del guía: $guideName")
 
                     // Pasar la lista de tours a la actividad PossibleTours
                     val intent = Intent(this, PossibleTours::class.java)
@@ -113,9 +121,6 @@ class SearchTour : AppCompatActivity() {
             }
         }
 
-// Agregar la solicitud a la cola de solicitudes de Volley para que se ejecute
-        Volley.newRequestQueue(this).add(request)
-
         // Agregar la solicitud a la cola de solicitudes de Volley para que se ejecute
         Volley.newRequestQueue(this).add(request)
     }
@@ -127,4 +132,6 @@ class SearchTour : AppCompatActivity() {
         startActivity(Intent(this, Login::class.java))
         finish() // Cerrar la actividad actual
     }
+
+
 }

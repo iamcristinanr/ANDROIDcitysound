@@ -55,7 +55,7 @@ class Login: AppCompatActivity() {
 
 
     private fun performLogin(email: String, password: String) {
-        val apiUrl = "http://192.168.0.17:8000/auth-token/"
+        val apiUrl = "http://192.168.0.10:8000/auth-token/"
 
 
 //VERIFICAR hacer conversiones de string a JSON que le pasamos a la API
