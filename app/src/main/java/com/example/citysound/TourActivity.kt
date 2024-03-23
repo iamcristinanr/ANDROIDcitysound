@@ -1,5 +1,6 @@
 package com.example.citysound
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -10,7 +11,7 @@ class TourActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tour)
 
-        val id = 1
+
 
         // Aquí puedes obtener los datos del tour de la API y mostrarlos en la interfaz de usuario
         val tourName = intent.getStringExtra("tourName") // Reemplaza con el nombre del tour obtenido de la API
@@ -31,5 +32,11 @@ class TourActivity : AppCompatActivity() {
         mapsButton.isEnabled = true
         guideButton.isEnabled = true
         pointsOfInterestButton.isEnabled = true
+
+        pointsOfInterestButton.setOnClickListener {
+            // Crear un Intent para abrir la actividad de la lista de puntos de interés
+            val intent = Intent(this, StopsList::class.java)
+            startActivity(intent)
+        }
     }
 }
