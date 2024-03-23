@@ -68,7 +68,7 @@ class SearchTour : AppCompatActivity() {
 
     private fun searchTours(city: String, tourName: String, guideName: String) {
         // URL de la API para realizar la búsqueda
-        val apiUrl = "http://192.168.0.10:8000/api/tours/?city=$city&tourName=$tourName&guideName=$guideName"
+        val apiUrl = "http://192.168.0.10:8000/api/tours/?location=$city&name=$tourName&created_by=$guideName"
 
 
 
