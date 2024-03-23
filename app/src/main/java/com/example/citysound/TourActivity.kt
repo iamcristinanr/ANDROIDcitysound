@@ -10,9 +10,12 @@ class TourActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tour)
 
+        val id = 1
+
         // Aquí puedes obtener los datos del tour de la API y mostrarlos en la interfaz de usuario
-        val tourName = "Example Tour" // Reemplaza con el nombre del tour obtenido de la API
-        val description = "Description of the tour." // Reemplaza con la descripción del tour obtenida de la API
+        val tourName = intent.getStringExtra("tourName") // Reemplaza con el nombre del tour obtenido de la API
+        val description = intent.getStringExtra("tourDescription") // Reemplaza con la descripción del tour obtenida de la API
+
 
         val tourNameTextView = findViewById<TextView>(R.id.tourNameTextView)
         val descriptionTextView = findViewById<TextView>(R.id.descriptionTextView)

@@ -1,6 +1,7 @@
 package com.example.citysound
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,18 @@ class TourAdapter(private val context: Context, private val tourList: List<Tour>
         holder.textViewTourName.text = currentTour.tourName
         holder.textViewDescription.text = currentTour.description
         // Agrega aquí la lógica para vincular otros datos si es necesario
+
+        holder.itemView.setOnClickListener {
+            // Obtener información del tour seleccionado
+            val selectedTour = tourList[position]
+
+            // Iniciar la actividad de detalle del tour y pasar la información del tour seleccionado
+            val intent = Intent(context, TourActivity::class.java)
+            intent.putExtra("tourId", selectedTour.id) // Suponiendo que el tour tiene un identificador único
+            intent.putExtra("tourName", selectedTour.tourName)
+            intent.putExtra("tourDescription", selectedTour.description)
+            context.startActivity(intent)
+        }
     }
 
     // Método para obtener la cantidad de elementos en la lista

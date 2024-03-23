@@ -68,7 +68,7 @@ class SearchTour : AppCompatActivity() {
 
     private fun searchTours(city: String, tourName: String, guideName: String) {
         // URL de la API para realizar la búsqueda
-        val apiUrl = "http://192.168.0.10:8000/api/tours/?city=$city&tourName=$tourName&guideName=$guideName"
+        val apiUrl = "http://192.168.0.10:8000/api/tours/?location=$city&name=$tourName&created_by=$guideName"
 
 
 
@@ -83,11 +83,13 @@ class SearchTour : AppCompatActivity() {
 
                     for (i in 0 until response.length()) {
                         val tourObject = response.getJSONObject(i)
+                        val id = tourObject.getInt("id")
                         val tourName = tourObject.getString("name")
                         val description = tourObject.getString("description")
                         // Aquí puedes obtener más atributos del objeto tour si es necesario
 
-                        val tour = Tour(tourName, description)
+
+                        val tour = Tour(id, tourName, description)
                         tourList.add(tour)
                     }
 
