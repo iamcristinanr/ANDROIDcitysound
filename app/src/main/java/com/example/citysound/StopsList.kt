@@ -49,10 +49,12 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
 
                     for (i in 0 until response.length()) {
                         val stopObject = response.getJSONObject(i)
+                        Log.d("Response", "JSON Object at position $i: $stopObject")
                         val stop = Stop(
                             stopObject.getInt("id"),
                             stopObject.getString("name"),
                             stopObject.getString("description"),
+                            stopObject.getString("image"),
                         )
                         stops.add(stop)
                     }
@@ -100,7 +102,9 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
     override fun onItemClick(stop: Stop) {
         // Abrir la actividad de detalles de la parada
         val intent = Intent(this, StopActivity::class.java)
-        intent.putExtra("stop", stop)
+        intent.putExtra("stopName", stop.name)
+        intent.putExtra("stopDescription", stop.description)
+        intent.putExtra("stopImage", stop.image)
         startActivity(intent)
     }
 }

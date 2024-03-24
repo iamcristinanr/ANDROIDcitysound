@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class TourAdapter(
     private val context: Context,
@@ -15,9 +16,10 @@ class TourAdapter(
 
     // Clase ViewHolder que representa cada elemento de la lista
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //val imageViewTour: ImageView = itemView.findViewById(R.id.imageViewTour)
+
         val textViewTourName: TextView = itemView.findViewById(R.id.textViewTourName)
         val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
+        val tourImageView: ImageView = itemView.findViewById(R.id.tourImageView)
         // Agrega aquí otras vistas si es necesario
     }
 
@@ -33,6 +35,13 @@ class TourAdapter(
         //holder.imageViewTour.setImageResource(currentTour.imageTour)
         holder.textViewTourName.text = currentTour.tourName
         holder.textViewDescription.text = currentTour.description
+
+        Glide.with(holder.itemView)
+            .load(currentTour.tourImage)
+            //.placeholder(R.drawable.placeholder_image) // Placeholder opcional mientras se carga la imagen
+            //.error(R.drawable.error_image) // Imagen de error opcional si la carga falla
+            .into(holder.tourImageView)
+
         // Agrega aquí la lógica para vincular otros datos si es necesario
 
         holder.itemView.setOnClickListener {
@@ -44,6 +53,7 @@ class TourAdapter(
             intent.putExtra("tourId", selectedTour.id) // Suponiendo que el tour tiene un identificador único
             intent.putExtra("tourName", selectedTour.tourName)
             intent.putExtra("tourDescription", selectedTour.description)
+            intent.putExtra("tourImage", selectedTour.tourImage)
             context.startActivity(intent)
         }
     }

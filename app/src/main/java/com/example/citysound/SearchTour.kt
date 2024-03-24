@@ -86,11 +86,12 @@ class SearchTour : AppCompatActivity() {
                         val tourId = tourObject.getInt("id")
                         val tourName = tourObject.getString("name")
                         val description = tourObject.getString("description")
+                        val tourImage = tourObject.getString("photo")
 
                         // Aquí puedes obtener más atributos del objeto tour si es necesario
 
 
-                        val tour = Tour(tourId, tourName, description)
+                        val tour = Tour(tourId, tourName, description, tourImage)
                         tourList.add(tour)
                     }
 
