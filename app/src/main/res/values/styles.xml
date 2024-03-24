@@ -42,5 +42,9 @@
     <style name="PopupMenuOverlay" parent="Widget.AppCompat.PopupMenu">
         <item name="android:popupBackground">@android:color/white</item>
     </style>
+    <style name="CircularShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item> <!-- Establece el tamaño de la esquina al 50%, lo que hace que sea completamente redonda -->
+    </style>
 
 </resources>

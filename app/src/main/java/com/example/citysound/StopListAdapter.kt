@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 class StopListAdapter(
     private val stopActivities: List<Stop>,
-    private val listener: OnItemClickListener
-) : RecyclerView.Adapter<StopListAdapter.ViewHolder>() {
+    private val listener: OnItemClickListener) : RecyclerView.Adapter<StopListAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
+
         fun onItemClick(stop: Stop)
     }
 

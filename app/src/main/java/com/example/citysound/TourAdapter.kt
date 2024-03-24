@@ -9,8 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TourAdapter(private val context: Context, private val tourList: List<Tour>) :
-    RecyclerView.Adapter<TourAdapter.ViewHolder>() {
+class TourAdapter(
+    private val context: Context,
+    private val tourList: List<Tour>) : RecyclerView.Adapter<TourAdapter.ViewHolder>() {
 
     // Clase ViewHolder que representa cada elemento de la lista
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

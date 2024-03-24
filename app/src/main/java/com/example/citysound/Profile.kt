@@ -17,8 +17,11 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.imageview.ShapeableImageView
 import org.json.JSONException
 import org.json.JSONObject
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 
 class Profile: AppCompatActivity() {
@@ -27,17 +30,27 @@ class Profile: AppCompatActivity() {
 
     private lateinit var nameProfileTextView: TextView
 
+    private lateinit var bioProfileTextView: TextView
+
+    private lateinit var photoProfileImageView: ShapeableImageView
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+
+        override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
         nameProfileTextView = findViewById(R.id.nameProfile)
+        bioProfileTextView = findViewById(R.id.bioProfile)
+        photoProfileImageView = findViewById(R.id.photoprofile)
+
+
+
 
 
         val buttonEditProfile = findViewById<Button>(R.id.buttonEditProfile)
         val buttonSearchTour = findViewById<Button>(R.id.buttonSearchTour)
+
 
         getUserProfileData()
 
@@ -98,8 +111,18 @@ class Profile: AppCompatActivity() {
                     if (response.length() > 0) {
                         val userObject = response.getJSONObject(0)
                         val name = userObject.getString("name")
+                        val biography = userObject.getString("biography")
+                        val photoprofile = userObject.getString("picture")
 
                         nameProfileTextView.text = name
+                        bioProfileTextView.text = biography
+
+                        Glide.with(this)
+                            .load(photoprofile)
+                            //.placeholder(R.drawable.placeholder_image) // Placeholder opcional
+                            //.error(R.drawable.error_image) // Manejo de errores opcional
+                            .circleCrop() // Hacer la imagen circular
+                            .into(photoProfileImageView)
                     }else{
                         Toast.makeText(this, "No se encontraron datos de usuario", Toast.LENGTH_SHORT).show()
                     }

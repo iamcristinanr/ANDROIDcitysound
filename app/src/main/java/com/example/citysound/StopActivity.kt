@@ -12,6 +12,7 @@ class StopActivity : AppCompatActivity() {
         // Obtener la parada seleccionada del Intent
         val stopActivity = intent.getParcelableExtra<Stop>("stop")
 
+        //val tourId = intent.getIntExtra("tourId", -1)
         // Mostrar los detalles de la parada en la interfaz de usuario
         val nameTextView = findViewById<TextView>(R.id.stopNameTextView)
         val descriptionTextView = findViewById<TextView>(R.id.stopDescriptionTextView)

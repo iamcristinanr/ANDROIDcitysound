@@ -83,13 +83,14 @@ class SearchTour : AppCompatActivity() {
 
                     for (i in 0 until response.length()) {
                         val tourObject = response.getJSONObject(i)
-                        val id = tourObject.getInt("id")
+                        val tourId = tourObject.getInt("id")
                         val tourName = tourObject.getString("name")
                         val description = tourObject.getString("description")
+
                         // Aquí puedes obtener más atributos del objeto tour si es necesario
 
 
-                        val tour = Tour(id, tourName, description)
+                        val tour = Tour(tourId, tourName, description)
                         tourList.add(tour)
                     }
 
