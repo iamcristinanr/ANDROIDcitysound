@@ -7,11 +7,13 @@ data class Stop(
     val id: Int,
     val name: String,
     val description: String,
+    val image: String,
 
 
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
+        parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
 
@@ -20,6 +22,7 @@ data class Stop(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeString(description)
+        parcel.writeString(image)
     }
 
     override fun describeContents(): Int {

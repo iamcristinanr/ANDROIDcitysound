@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class StopListAdapter(
     private val stopActivities: List<Stop>,
@@ -19,6 +21,9 @@ class StopListAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val nameTextView: TextView = itemView.findViewById(R.id.stopNameTextView)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.stopDescriptionTextView)
+        private val stopImageView: ImageView = itemView.findViewById(R.id.stopImageView)
+
+
 
         init {
             itemView.setOnClickListener(this)
@@ -27,6 +32,12 @@ class StopListAdapter(
         fun bind(stopActivity: Stop) {
             nameTextView.text = stopActivity.name
             descriptionTextView.text = stopActivity.description
+
+            Glide.with(itemView)
+                .load(stopActivity.image)
+                //.placeholder(R.drawable.placeholder_image) // Placeholder opcional mientras se carga la imagen
+                //.error(R.drawable.error_image) // Imagen de error opcional si la carga falla
+                .into(stopImageView)
         }
 
         override fun onClick(view: View) {
