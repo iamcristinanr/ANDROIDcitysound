@@ -38,7 +38,11 @@
             android:paddingEnd="8dp"
             android:paddingBottom="8dp" />
 
-        <!-- Agrega cualquier otro elemento que desees mostrar para cada tour -->
+        <include
+            layout="@layout/activity_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
 
     </LinearLayout>
 

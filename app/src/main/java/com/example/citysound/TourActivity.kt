@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class TourActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,7 +16,7 @@ class TourActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tour)
 
 
-
+        lateinit var bottomNavigationView: BottomNavigationView
         // Aquí puedes obtener los datos del tour de la API y mostrarlos en la interfaz de usuario
         val tourId = intent.getIntExtra("tourId", -1) // Obtener el ID del tour
         val tourName = intent.getStringExtra("tourName") // obtiene name api
@@ -47,9 +48,56 @@ class TourActivity : AppCompatActivity() {
         pointsOfInterestButton.setOnClickListener {
             // Crear un Intent para abrir la actividad de la lista de puntos de interés
             val intent = Intent(this, StopsList::class.java)
-            intent.putExtra("tour_id" , tourId)
+            intent.putExtra("tour_id", tourId)
             Log.d("TourActivity", "Tour ID: $tourId")
             startActivity(intent)
+
+
         }
+
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+
+            // Manejar las selecciones del menú
+            when (menuItem.itemId) {
+                R.id.nav_search -> {
+                    // Abrir la actividad SearchTour si no está abierta ya
+                    if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
+                        startActivity(Intent(this, SearchTour::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+
+                R.id.nav_profile -> {
+                    // Abrir la actividad Profile si no está abierta ya
+                    if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
+                        startActivity(Intent(this, Profile::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+
+                R.id.nav_logout -> {
+                    // Abrir la actividad HomeActivity
+                    logout()
+                    true
+                }
+
+                else -> false
+            }
+        }
+    }
+
+
+
+
+    private fun logout() {
+        // Limpiar el token de acceso al cerrar sesión
+        SessionManager.clearAccessToken(this)
+        // Redirigir al usuario a la pantalla de inicio de sesión
+        startActivity(Intent(this, Login::class.java))
+        finish() // Cerrar la actividad actual
     }
 }

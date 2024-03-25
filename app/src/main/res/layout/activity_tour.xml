@@ -96,4 +96,9 @@
         android:layout_marginTop="150dp"
         android:layout_marginEnd="16dp" />
 
+    <include
+        layout="@layout/activity_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,11 +14,13 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.json.JSONException
 
 class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
 
     private lateinit var requestQueue: RequestQueue
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,47 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
         } else {
             Toast.makeText(this, "Tour ID no válido", Toast.LENGTH_SHORT).show()
         }
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+
+            // Manejar las selecciones del menú
+            when (menuItem.itemId) {
+                R.id.nav_search -> {
+                    // Abrir la actividad SearchTour si no está abierta ya
+                    if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
+                        startActivity(Intent(this, SearchTour::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+
+                R.id.nav_profile -> {
+                    // Abrir la actividad Profile si no está abierta ya
+                    if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
+                        startActivity(Intent(this, Profile::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+
+                R.id.nav_logout -> {
+                    // Abrir la actividad HomeActivity
+                    logout()
+                    true
+                }
+
+                else -> false
+            }
+        }
+    }
+
+    private fun logout() {
+        // Limpiar el token de acceso al cerrar sesión
+        SessionManager.clearAccessToken(this)
+        // Redirigir al usuario a la pantalla de inicio de sesión
+        startActivity(Intent(this, Login::class.java))
+        finish() // Cerrar la actividad actual
     }
 
     private fun ApiRequest(url: String) {

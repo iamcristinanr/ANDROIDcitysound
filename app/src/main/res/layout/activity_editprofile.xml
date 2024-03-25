@@ -28,7 +28,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/photoprofile"
         app:layout_constraintTop_toBottomOf="@+id/photoprofile"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="60dp" />
 
     <EditText
         android:id="@+id/editTextUsername"

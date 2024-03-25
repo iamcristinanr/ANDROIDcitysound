@@ -56,6 +56,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp" />
 
+    <include
+        layout="@layout/activity_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

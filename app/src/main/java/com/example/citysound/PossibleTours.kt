@@ -1,13 +1,16 @@
 package com.example.citysound
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class PossibleTours : AppCompatActivity() {
 
+    private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var recyclerView: RecyclerView
     private lateinit var tourAdapter: TourAdapter
     private lateinit var tourList: MutableList<Tour>
@@ -32,6 +35,48 @@ class PossibleTours : AppCompatActivity() {
             Toast.makeText(this, "No hay tours disponibles", Toast.LENGTH_SHORT).show()
         }
 
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+
+            // Manejar las selecciones del menú
+            when (menuItem.itemId) {
+                R.id.nav_search -> {
+                    // Abrir la actividad SearchTour si no está abierta ya
+                    if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
+                        startActivity(Intent(this, SearchTour::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+
+                R.id.nav_profile -> {
+                    // Abrir la actividad Profile si no está abierta ya
+                    if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
+                        startActivity(Intent(this, Profile::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+
+                R.id.nav_logout -> {
+                    // Abrir la actividad HomeActivity
+                    logout()
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+    }
         //tourAdapter.notifyDataSetChanged()
+
+        private fun logout() {
+            // Limpiar el token de acceso al cerrar sesión
+            SessionManager.clearAccessToken(this)
+            // Redirigir al usuario a la pantalla de inicio de sesión
+            startActivity(Intent(this, Login::class.java))
+            finish() // Cerrar la actividad actual
     }
 }
