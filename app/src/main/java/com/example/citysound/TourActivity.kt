@@ -1,14 +1,21 @@
 package com.example.citysound
 
+import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.io.IOException
 
 class TourActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +29,7 @@ class TourActivity : AppCompatActivity() {
         val tourName = intent.getStringExtra("tourName") // obtiene name api
         val description = intent.getStringExtra("tourDescription") // Obtiene desc api
         val tourImage = intent.getStringExtra("tourImage")
+
 
         val tourNameTextView = findViewById<TextView>(R.id.tourNameTextView)
         val descriptionTextView = findViewById<TextView>(R.id.descriptionTextView)
@@ -40,10 +48,74 @@ class TourActivity : AppCompatActivity() {
         val mapsButton = findViewById<Button>(R.id.mapsButton)
         val guideButton = findViewById<Button>(R.id.guideButton)
         val pointsOfInterestButton = findViewById<Button>(R.id.pointsOfInterestButton)
+        val playTourButton = findViewById<Button>(R.id.tourPlayButton)
 
         mapsButton.isEnabled = true
         guideButton.isEnabled = true
         pointsOfInterestButton.isEnabled = true
+
+        val mediaPlayer = MediaPlayer()
+
+
+
+
+        fun reproducirAudio(tourId: Int, context: Context, mediaPlayer: MediaPlayer, playTourButton: Button) {
+            val url = "http://192.168.0.10:8000/api/tours/$tourId/"
+
+            // Configurar una cola de solicitudes Volley
+            val requestQueue = Volley.newRequestQueue(context)
+
+            // Crear una solicitud GET para obtener los detalles del tour
+            val jsonObjectRequest = object : JsonObjectRequest(
+                Request.Method.GET, url, null,
+                { response ->
+                    // Procesar la respuesta JSON y obtener el audio
+                    val audioUrl = response.getString("audio")
+
+                    // Configurar el reproductor multimedia con el audio obtenido
+                    try {
+                        mediaPlayer.setDataSource(audioUrl)
+                        mediaPlayer.prepare()
+                    } catch (e: IOException) {
+                        Log.e("TourActivity", "Error preparing media player: ${e.message}")
+                        Toast.makeText(context, "Error preparando el reproductor de audio", Toast.LENGTH_SHORT).show()
+                    }
+
+                    // Manejar el clic en el botón de reproducción
+                    playTourButton.setOnClickListener {
+                        if (mediaPlayer.isPlaying) {
+                            mediaPlayer.pause()
+                            playTourButton.text = "Play"
+                        } else {
+                            mediaPlayer.start()
+                            playTourButton.text = "Pause"
+                        }
+                    }
+                },
+                { error ->
+                    Toast.makeText(context, "Error al obtener detalles del tour: ${error.message}", Toast.LENGTH_SHORT).show()
+                }) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    // Obtener el token de acceso desde SessionManager
+                    val sharedPreferences = context.getSharedPreferences(SessionManager.PREFS_NAME, Context.MODE_PRIVATE)
+                    val accessToken = SessionManager.getAccessToken(sharedPreferences)
+                    // Agregar el token de autenticación a las cabeceras si está disponible
+                    accessToken?.let {
+                        headers["Authorization"] = "Token $it"
+                    }
+                    return headers
+                }
+            }
+
+            // Agregar la solicitud a la cola de solicitudes Volley
+            requestQueue.add(jsonObjectRequest)
+        }
+
+        playTourButton.setOnClickListener {
+            // Llamar a la función reproducirAudio() pasando los parámetros necesarios
+            reproducirAudio(tourId, this, mediaPlayer, playTourButton)
+        }
 
         pointsOfInterestButton.setOnClickListener {
             // Crear un Intent para abrir la actividad de la lista de puntos de interés
@@ -100,4 +172,6 @@ class TourActivity : AppCompatActivity() {
         startActivity(Intent(this, Login::class.java))
         finish() // Cerrar la actividad actual
     }
+
+
 }

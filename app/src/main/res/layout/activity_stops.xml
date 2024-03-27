@@ -21,18 +21,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@mipmap/default_tour_image" />
 
+    <Button
+        android:id="@+id/stopPlayButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stopImageView" />
+
     <TextView
         android:id="@+id/stopNameTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Stop Name"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/stopImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintStart_toEndOf="@id/stopPlayButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"/>
+
 
     <TextView
         android:id="@+id/stopDescriptionTextView"
@@ -46,15 +59,7 @@
         android:layout_marginStart="27dp"
         android:layout_marginTop="8dp" />
 
-    <Button
-        android:id="@+id/StopPlayButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Play"
-        app:layout_constraintTop_toBottomOf="@id/stopImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp" />
+
 
     <include
         layout="@layout/activity_navigation"

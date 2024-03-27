@@ -8,6 +8,7 @@ data class Tour(
     val tourName: String,
     val description: String,
     val tourImage: String, // Si deseas incluir una imagen, puedes usar un recurso de imagen
+
     // val pointsOfInterest: List<String> // Si deseas incluir una lista de puntos de interés
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -15,6 +16,7 @@ data class Tour(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
+
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -22,6 +24,7 @@ data class Tour(
         parcel.writeString(tourName)
         parcel.writeString(description)
         parcel.writeString(tourImage)
+
     }
 
     override fun describeContents(): Int {
