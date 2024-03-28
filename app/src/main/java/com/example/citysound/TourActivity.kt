@@ -63,9 +63,7 @@ class TourActivity : AppCompatActivity() {
         var isPaused = false
 
 
-
-
-        fun reproducirAudio(tourId: Int, context: Context, mediaPlayer: MediaPlayer, playTourButton: Button) {
+        fun reproducirAudioTour(tourId: Int, context: Context, mediaPlayer: MediaPlayer, playTourButton: Button) {
             val url = "http://192.168.0.10:8000/api/tours/$tourId/"
 
             // Configurar una cola de solicitudes Volley
@@ -138,7 +136,7 @@ class TourActivity : AppCompatActivity() {
         playTourButton.setOnClickListener {
             if (!mediaPlayer.isPlaying && !isPaused) {
                 // Si no se está reproduciendo y no está pausado, comenzar desde el principio
-                reproducirAudio(tourId, this, mediaPlayer, playTourButton)
+                reproducirAudioTour(tourId, this, mediaPlayer, playTourButton)
                 playTourButton.text = "Pause"
             } else if (!isPaused) {
                 // Si no está pausado, pausarlo y actualizar el texto del botón

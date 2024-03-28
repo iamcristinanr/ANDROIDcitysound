@@ -7,20 +7,20 @@
     android:background="@android:color/white">
 
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/fndprofile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@mipmap/fndprof"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-33dp" />
+        tools:layout_editor_absoluteY="-33dp" />-->
 
     <TextView
         android:id="@+id/Profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Profile"
-        style="@style/textTittleProfile"
+        android:textStyle="bold"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/photoprofile"
@@ -40,7 +40,7 @@
         app:shapeAppearanceOverlay="@style/CircularShape"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Profile"
-        app:strokeColor="@android:color/white"
+        app:strokeColor="@android:color/black"
         />
 
     <TextView
@@ -48,9 +48,10 @@
         style="@style/textTittleProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Name"
         android:layout_marginStart="44dp"
         android:layout_marginTop="24dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@id/photoprofile"
         app:layout_constraintTop_toBottomOf="@id/Profile" />
 
@@ -60,8 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="12dp"
-        android:text=""
-        android:textColor="@color/white"
+        android:text="Biography"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@id/photoprofile"
         app:layout_constraintTop_toBottomOf="@id/nameProfile"
         app:layout_constraintWidth_max="200dp"
