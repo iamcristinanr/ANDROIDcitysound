@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,8 @@ import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.IOException
+import java.util.Timer
+import java.util.TimerTask
 
 class TourActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,12 +52,15 @@ class TourActivity : AppCompatActivity() {
         val guideButton = findViewById<Button>(R.id.guideButton)
         val pointsOfInterestButton = findViewById<Button>(R.id.pointsOfInterestButton)
         val playTourButton = findViewById<Button>(R.id.tourPlayButton)
+        val seekBar = findViewById<SeekBar>(R.id.seekBar)
 
         mapsButton.isEnabled = true
         guideButton.isEnabled = true
         pointsOfInterestButton.isEnabled = true
 
         val mediaPlayer = MediaPlayer()
+
+        var isPaused = false
 
 
 
@@ -76,21 +82,34 @@ class TourActivity : AppCompatActivity() {
                     try {
                         mediaPlayer.setDataSource(audioUrl)
                         mediaPlayer.prepare()
+                        seekBar.max = mediaPlayer.duration
                     } catch (e: IOException) {
                         Log.e("TourActivity", "Error preparing media player: ${e.message}")
                         Toast.makeText(context, "Error preparando el reproductor de audio", Toast.LENGTH_SHORT).show()
                     }
 
-                    // Manejar el clic en el botón de reproducción
-                    playTourButton.setOnClickListener {
-                        if (mediaPlayer.isPlaying) {
-                            mediaPlayer.pause()
-                            playTourButton.text = "Play"
-                        } else {
-                            mediaPlayer.start()
-                            playTourButton.text = "Pause"
+                    // Manejar el cambio de progreso en la seekbar
+                    seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                            if (fromUser) {
+                                mediaPlayer.seekTo(progress)
+                            }
                         }
-                    }
+
+                        override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                        override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+                    })
+
+                    // Actualizar la posición de la seekbar mientras se reproduce el audio
+                    Timer().scheduleAtFixedRate(object : TimerTask() {
+                        override fun run() {
+                            seekBar.progress = mediaPlayer.currentPosition
+                        }
+                    }, 0, 1000)
+
+                    // Iniciar la reproducción automáticamente
+                    mediaPlayer.start()
                 },
                 { error ->
                     Toast.makeText(context, "Error al obtener detalles del tour: ${error.message}", Toast.LENGTH_SHORT).show()
@@ -106,15 +125,32 @@ class TourActivity : AppCompatActivity() {
                     }
                     return headers
                 }
+
+
             }
 
             // Agregar la solicitud a la cola de solicitudes Volley
             requestQueue.add(jsonObjectRequest)
         }
 
+
+
         playTourButton.setOnClickListener {
-            // Llamar a la función reproducirAudio() pasando los parámetros necesarios
-            reproducirAudio(tourId, this, mediaPlayer, playTourButton)
+            if (!mediaPlayer.isPlaying && !isPaused) {
+                // Si no se está reproduciendo y no está pausado, comenzar desde el principio
+                reproducirAudio(tourId, this, mediaPlayer, playTourButton)
+                playTourButton.text = "Pause"
+            } else if (!isPaused) {
+                // Si no está pausado, pausarlo y actualizar el texto del botón
+                mediaPlayer.pause()
+                playTourButton.text = "Play"
+                isPaused = true
+            } else {
+                // Si está pausado, reanudar la reproducción
+                mediaPlayer.start()
+                playTourButton.text = "Pause"
+                isPaused = false
+            }
         }
 
         pointsOfInterestButton.setOnClickListener {
