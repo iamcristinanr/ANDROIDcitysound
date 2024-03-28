@@ -21,6 +21,7 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
 
     private lateinit var requestQueue: RequestQueue
     private lateinit var bottomNavigationView: BottomNavigationView
+    private var tourId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +33,18 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewStops)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val tourId = intent.getIntExtra("tour_id", -1)
+        tourId = intent.getIntExtra("tour_id", -1)
 
         if (tourId != -1) {
             Log.d("TourActivity", "Tour ID: $tourId")
+            Log.d("StopsList", "tourId in onItemClick: $tourId")
             val url = "http://192.168.0.10:8000/api/tours/$tourId/stops/"
             ApiRequest(url)
         } else {
             Toast.makeText(this, "Tour ID no válido", Toast.LENGTH_SHORT).show()
         }
+
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view)
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
@@ -145,9 +149,13 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
     override fun onItemClick(stop: Stop) {
         // Abrir la actividad de detalles de la parada
         val intent = Intent(this, StopActivity::class.java)
+        intent.putExtra("tourId", tourId)
+        Log.d("StopsList", "tourId in onItemClick: $tourId")
+        intent.putExtra("stopId", stop.id)
         intent.putExtra("stopName", stop.name)
         intent.putExtra("stopDescription", stop.description)
         intent.putExtra("stopImage", stop.image)
+
         startActivity(intent)
     }
 }

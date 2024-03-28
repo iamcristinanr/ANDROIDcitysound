@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Profile" android:id="@+id/nav_profile" />
-    <item android:title="Search" android:id="@+id/nav_search" />
-    <item android:title="Log Out" android:id="@+id/nav_logout" />
+    <item
+        android:title="Profile"
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/profile"/>
+    <item
+        android:title="Search"
+        android:id="@+id/nav_search"
+        android:icon="@drawable/search"/>
+    <item
+        android:title="Log Out"
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/logout"/>
 
 </menu>
