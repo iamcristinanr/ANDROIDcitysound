@@ -106,7 +106,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:drawablePadding="12dp"
-        android:text="Gonzalez13*"
+        android:inputType="textPassword"
+        android:text="1234"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtPasswordLogin" />

@@ -6,6 +6,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
@@ -40,7 +41,7 @@ class StopActivity : AppCompatActivity() {
         val nameTextView = findViewById<TextView>(R.id.stopNameTextView)
         val descriptionTextView = findViewById<TextView>(R.id.stopDescriptionTextView)
         val stopImageView = findViewById<ImageView>(R.id.stopImageView)
-        val playStopButton = findViewById<Button>(R.id.stopPlayButton)
+        val playStopButton = findViewById<ImageButton>(R.id.stopPlayButton)
         val seekBar = findViewById<SeekBar>(R.id.seekBar)
 
         nameTextView.text = stopName
@@ -56,7 +57,7 @@ class StopActivity : AppCompatActivity() {
 
         var isPaused = false
 
-        fun reproducirAudioTour(tourId: Int, context: Context, mediaPlayer: MediaPlayer, playTourButton: Button) {
+        fun reproducirAudioTour(tourId: Int, context: Context, mediaPlayer: MediaPlayer, playTourButton: ImageButton) {
             val url = "http://192.168.0.10:8000/api/tours/$tourId/stops/$stopId"
 
             // Configurar una cola de solicitudes Volley
@@ -127,16 +128,16 @@ class StopActivity : AppCompatActivity() {
             if (!mediaPlayer.isPlaying && !isPaused) {
                 // Si no se está reproduciendo y no está pausado, comenzar desde el principio
                 reproducirAudioTour(tourId, this, mediaPlayer, playStopButton)
-                playStopButton.text = "Pause"
+                playStopButton.setImageResource(R.drawable.pause)
             } else if (!isPaused) {
                 // Si no está pausado, pausarlo y actualizar el texto del botón
                 mediaPlayer.pause()
-                playStopButton.text = "Play"
+                playStopButton.setImageResource(R.drawable.play)
                 isPaused = true
             } else {
                 // Si está pausado, reanudar la reproducción
                 mediaPlayer.start()
-                playStopButton.text = "Pause"
+                playStopButton.setImageResource(R.drawable.pause)
                 isPaused = false
             }
         }

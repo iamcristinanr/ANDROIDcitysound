@@ -15,13 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/spotdown"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@mipmap/spotdown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button"/>
+
 
     <TextView
         android:id="@+id/createNew"
@@ -36,14 +30,15 @@
         app:layout_constraintTop_toBottomOf="@+id/spot" />
 
     <TextView
-        android:id="@+id/Already"
+        android:id="@+id/Alreadyregistered"
         style="@style/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already Registered? "
         android:textColor="@color/orange"
         app:layout_constraintTop_toBottomOf="@+id/createNew"
-        tools:layout_editor_absoluteX="82dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/Login"
@@ -53,7 +48,7 @@
         android:text="Login"
         android:textStyle="bold"
         android:textColor="@color/orange"
-        app:layout_constraintStart_toEndOf="@id/Already"
+        app:layout_constraintStart_toEndOf="@id/Alreadyregistered"
         app:layout_constraintTop_toBottomOf="@+id/createNew"
         android:onClick="gotologinpactivity"/>
 
@@ -68,7 +63,7 @@
         android:text="Please enter your name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Already" />
+        app:layout_constraintTop_toBottomOf="@+id/Alreadyregistered" />
 
 
     <EditText
@@ -78,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:drawablePadding="12dp"
-        android:hint="Example Name"
+        android:hint="Examplename"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtname" />
@@ -103,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:drawablePadding="12dp"
-        android:text="hello@reallygreatsite.com"
+        android:hint="hello@reallygreatsite.com"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtmail" />
@@ -128,7 +123,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:drawablePadding="12dp"
-        android:text="xxxxxxxx"
+        android:inputType="textPassword"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtpassword" />
@@ -140,22 +136,23 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:drawablePadding="12dp"
-        android:text="xxxxxxxx"
+        android:inputType="textPassword"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/password1" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="100dp"
         android:backgroundTint="@color/orange"
         android:drawablePadding="12dp"
         android:text="SIGN UP"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="30dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
