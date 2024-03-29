@@ -146,6 +146,22 @@
         android:layout_marginEnd="16dp" />
 
 
+    <Button
+        android:id="@+id/comButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/orange"
+        android:text="Comments"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="80dp"
+         />
+
     <include
         layout="@layout/activity_navigation"
         android:layout_width="match_parent"
