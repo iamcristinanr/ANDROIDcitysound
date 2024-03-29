@@ -6,6 +6,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
@@ -32,6 +33,8 @@ class TourActivity : AppCompatActivity() {
         val tourName = intent.getStringExtra("tourName") // obtiene name api
         val description = intent.getStringExtra("tourDescription") // Obtiene desc api
         val tourImage = intent.getStringExtra("tourImage")
+        val guideId = intent.getStringExtra("guideId")
+        Log.d("TourActivity", "Valor de created_by: $guideId")
 
 
         val tourNameTextView = findViewById<TextView>(R.id.tourNameTextView)
@@ -51,7 +54,7 @@ class TourActivity : AppCompatActivity() {
         val mapsButton = findViewById<Button>(R.id.mapsButton)
         val guideButton = findViewById<Button>(R.id.guideButton)
         val pointsOfInterestButton = findViewById<Button>(R.id.pointsOfInterestButton)
-        val playTourButton = findViewById<Button>(R.id.tourPlayButton)
+        val playTourButton = findViewById<ImageButton>(R.id.tourPlayButton)
         val seekBar = findViewById<SeekBar>(R.id.seekBar)
 
         mapsButton.isEnabled = true
@@ -63,7 +66,7 @@ class TourActivity : AppCompatActivity() {
         var isPaused = false
 
 
-        fun reproducirAudioTour(tourId: Int, context: Context, mediaPlayer: MediaPlayer, playTourButton: Button) {
+        fun reproducirAudioTour(tourId: Int, context: Context, mediaPlayer: MediaPlayer, playTourButton: ImageButton) {
             val url = "http://192.168.0.10:8000/api/tours/$tourId/"
 
             // Configurar una cola de solicitudes Volley
@@ -137,16 +140,16 @@ class TourActivity : AppCompatActivity() {
             if (!mediaPlayer.isPlaying && !isPaused) {
                 // Si no se está reproduciendo y no está pausado, comenzar desde el principio
                 reproducirAudioTour(tourId, this, mediaPlayer, playTourButton)
-                playTourButton.text = "Pause"
+                playTourButton.setImageResource(R.drawable.pause)
             } else if (!isPaused) {
                 // Si no está pausado, pausarlo y actualizar el texto del botón
                 mediaPlayer.pause()
-                playTourButton.text = "Play"
+                playTourButton.setImageResource(R.drawable.play)
                 isPaused = true
             } else {
                 // Si está pausado, reanudar la reproducción
                 mediaPlayer.start()
-                playTourButton.text = "Pause"
+                playTourButton.setImageResource(R.drawable.pause)
                 isPaused = false
             }
         }
@@ -160,7 +163,16 @@ class TourActivity : AppCompatActivity() {
 
 
         }
-
+        guideButton.setOnClickListener {
+            if (guideId != null) {
+                val intent = Intent(this, ProfileGuide::class.java)
+                intent.putExtra("guideId", guideId)
+                startActivity(intent)
+            } else {
+                Log.e("TourActivity", "guideId es nulo al intentar iniciar ProfileGuide")
+                // Aquí puedes manejar el caso en el que guideId es nulo
+            }
+        }
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view)
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
