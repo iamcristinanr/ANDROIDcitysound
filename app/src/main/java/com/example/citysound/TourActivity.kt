@@ -56,6 +56,7 @@ class TourActivity : AppCompatActivity() {
         val pointsOfInterestButton = findViewById<Button>(R.id.pointsOfInterestButton)
         val playTourButton = findViewById<ImageButton>(R.id.tourPlayButton)
         val seekBar = findViewById<SeekBar>(R.id.seekBar)
+        val comButton = findViewById<Button>(R.id.comButton)
 
         mapsButton.isEnabled = true
         guideButton.isEnabled = true
@@ -161,8 +162,14 @@ class TourActivity : AppCompatActivity() {
             Log.d("TourActivity", "Tour ID: $tourId")
             startActivity(intent)
 
+        }
+
+        comButton.setOnClickListener {
+            val intent = Intent(this, CommentActivity::class.java)
+            startActivity(intent)
 
         }
+
         guideButton.setOnClickListener {
             if (guideId != null) {
                 val intent = Intent(this, ProfileGuide::class.java)
