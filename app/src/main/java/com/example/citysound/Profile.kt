@@ -102,40 +102,32 @@ class Profile: AppCompatActivity() {
 
     private fun getUserProfileData() {
         val queue = Volley.newRequestQueue(this)
-        val url = "http://192.168.0.10:8000/api/users/"
+        val url = "http://192.168.0.10:8000/api/users/me/"
 
-        val request = object : JsonArrayRequest(Request.Method.GET, url, null,
-            { response ->
-                // Manejar la respuesta de la API aquí
-                try {
-                    if (response.length() > 0) {
-                        val userObject = response.getJSONObject(0)
-                        val name = userObject.getString("name")
-                        val biography = userObject.getString("biography")
-                        val photoprofile = userObject.getString("picture")
+    val request = object : JsonObjectRequest(Method.GET, url, null,
+        { response ->
+            // Manejar la respuesta de la API aquí
+            try {
+                val name = response.getString("name")
+                val biography = response.getString("biography")
+                val photoprofile = response.getString("picture")
 
-                        nameProfileTextView.text = name
-                        bioProfileTextView.text = biography
+                nameProfileTextView.text = name
+                bioProfileTextView.text = biography
 
-                        Glide.with(this)
-                            .load(photoprofile)
-                            //.placeholder(R.drawable.placeholder_image) // Placeholder opcional
-                            //.error(R.drawable.error_image) // Manejo de errores opcional
-                            .circleCrop() // Hacer la imagen circular
-                            .into(photoProfileImageView)
-                    }else{
-                        Toast.makeText(this, "No se encontraron datos de usuario", Toast.LENGTH_SHORT).show()
-                    }
-                    // Aquí puedes mostrar otros datos del usuario según sea necesario
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                    // Manejar el caso en que la respuesta no tenga el formato esperado
-                }
-            },
-            { error ->
-                Toast.makeText(this, "Error al obtener los datos del usuario: ${error.message}", Toast.LENGTH_SHORT).show()
-                Log.d("ProfileActivity","Error al obtener los datos del usuario: ${error.message}")
-            }) {
+                Glide.with(this@Profile)
+                    .load(photoprofile)
+                    .circleCrop()
+                    .into(photoProfileImageView)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                // Manejar el caso en que la respuesta no tenga el formato esperado
+            }
+        },
+        { error ->
+            Toast.makeText(this@Profile, "Error al obtener los datos del usuario: ${error.message}", Toast.LENGTH_SHORT).show()
+            Log.d("ProfileActivity", "Error al obtener los datos del usuario: ${error.message}")
+        }) {
 
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()

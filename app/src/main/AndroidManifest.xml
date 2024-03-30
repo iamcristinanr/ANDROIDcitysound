@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:usesCleartextTraffic="true"
@@ -98,14 +100,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".CommentActivity"
+            android:name=".CommentList"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".EditComment"
+            android:name=".LeaveComment"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"

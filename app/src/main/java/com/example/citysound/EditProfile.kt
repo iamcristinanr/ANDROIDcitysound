@@ -1,9 +1,11 @@
 package com.example.citysound
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
@@ -11,12 +13,21 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.imageview.ShapeableImageView
 import org.json.JSONObject
 
 class EditProfile : AppCompatActivity() {
 
+    private lateinit var bottomNavigationView: BottomNavigationView
+
     private lateinit var requestQueue: RequestQueue
-    private var userId: Int = -1
+
+    private var userurl: String = ""
+
+    private lateinit var photoProfile: ShapeableImageView
+
+    private lateinit var buttonChangePhoto: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,26 +35,30 @@ class EditProfile : AppCompatActivity() {
 
         requestQueue = Volley.newRequestQueue(this)
 
+        val photoProfile = findViewById<ShapeableImageView>(R.id.photoprofile)
+        val editPhotoProfile= findViewById<ImageButton>(R.id.buttonChangePhoto)
         val editTextUsername = findViewById<EditText>(R.id.editTextUsername)
         val editTextBio = findViewById<EditText>(R.id.editTextBio)
         val buttonSave = findViewById<Button>(R.id.buttonSave)
 
         // Obtener el ID del usuario del servidor antes de enviar la solicitud de actualización del perfil
-        getUserId()
+        getUrl()
+
+
 
         buttonSave.setOnClickListener {
             val newUsername = editTextUsername.text.toString()
             val newBio = editTextBio.text.toString()
 
             // Verificar si se obtuvo el ID del usuario correctamente
-            if (userId == -1) {
-                Toast.makeText(this, "No se pudo obtener el ID del usuario", Toast.LENGTH_SHORT)
+            if (userurl == "") {
+                Toast.makeText(this, "No se pudo obtener el Url del usuario", Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
             }
 
             // Construir la URL de la API para actualizar el perfil con el ID del usuario
-            val url = "http://192.168.0.10:8000/api/users/$userId/"
+            val url = userurl
 
             // Crear el objeto JSON con los datos actualizados
             val params = JSONObject()
@@ -52,7 +67,7 @@ class EditProfile : AppCompatActivity() {
 
             // Crear la solicitud PUT
             val request = object : JsonObjectRequest(
-                Request.Method.PUT, url, params,
+                Request.Method.PUT, userurl, params,
                 Response.Listener { response ->
                     // Manejar la respuesta de la API
                     Toast.makeText(this, "Perfil actualizado correctamente", Toast.LENGTH_SHORT)
@@ -86,15 +101,49 @@ class EditProfile : AppCompatActivity() {
             // Agregar la solicitud a la cola de solicitudes
             requestQueue.add(request)
         }
+
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+
+            // Manejar las selecciones del menú
+            when (menuItem.itemId) {
+                R.id.nav_search -> {
+                    // Abrir la actividad SearchTour si no está abierta ya
+                    if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
+                        startActivity(Intent(this, SearchTour::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+                R.id.nav_profile -> {
+                    // Abrir la actividad Profile si no está abierta ya
+                    if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
+                        startActivity(Intent(this, Profile::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+                R.id.nav_logout -> {
+                    // Abrir la actividad HomeActivity
+                    logout()
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
-    private fun getUserId() {
-        val url = "http://192.168.0.10:8000/api/users/{id}"
+
+
+    private fun getUrl() {
+        val url = "http://192.168.0.10:8000/api/users/me/"
 
         val request = object : JsonObjectRequest(Method.GET, url, null,
             { response ->
                 try {
-                    userId = response.getInt("id")
+                    userurl = response.getString("url")
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -119,4 +168,13 @@ class EditProfile : AppCompatActivity() {
 
         requestQueue.add(request)
     }
+    private fun logout() {
+        // Limpiar el token de acceso al cerrar sesión
+        SessionManager.clearAccessToken(this)
+        // Redirigir al usuario a la pantalla de inicio de sesión
+        startActivity(Intent(this, Login::class.java))
+        finish() // Cerrar la actividad actual
+    }
+
+
 }

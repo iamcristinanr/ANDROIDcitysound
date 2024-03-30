@@ -43,7 +43,7 @@ class Signup: AppCompatActivity() {
         val apiUrl = "http://192.168.0.10:8000/register/"
 
         val jsonBody = JSONObject()
-        jsonBody.put("name", name)
+        jsonBody.put("username", name)
         jsonBody.put("email", email)
         jsonBody.put("password1", password1)
         jsonBody.put("password2", password2)

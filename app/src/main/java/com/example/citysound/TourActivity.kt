@@ -22,7 +22,11 @@ import java.util.Timer
 import java.util.TimerTask
 
 class TourActivity : AppCompatActivity() {
+
+    private lateinit var mediaPlayer: MediaPlayer
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tour)
 
@@ -35,6 +39,7 @@ class TourActivity : AppCompatActivity() {
         val tourImage = intent.getStringExtra("tourImage")
         val guideId = intent.getStringExtra("guideId")
         Log.d("TourActivity", "Valor de created_by: $guideId")
+        Log.d("TourActivity", "Valor de tourId: $tourId")
 
 
         val tourNameTextView = findViewById<TextView>(R.id.tourNameTextView)
@@ -62,9 +67,10 @@ class TourActivity : AppCompatActivity() {
         guideButton.isEnabled = true
         pointsOfInterestButton.isEnabled = true
 
-        val mediaPlayer = MediaPlayer()
 
         var isPaused = false
+
+        mediaPlayer = MediaPlayer()
 
 
         fun reproducirAudioTour(tourId: Int, context: Context, mediaPlayer: MediaPlayer, playTourButton: ImageButton) {
@@ -116,6 +122,8 @@ class TourActivity : AppCompatActivity() {
                 { error ->
                     Toast.makeText(context, "Error al obtener detalles del tour: ${error.message}", Toast.LENGTH_SHORT).show()
                 }) {
+
+
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>()
                     // Obtener el token de acceso desde SessionManager
@@ -138,22 +146,24 @@ class TourActivity : AppCompatActivity() {
 
 
         playTourButton.setOnClickListener {
-            if (!mediaPlayer.isPlaying && !isPaused) {
+            if (mediaPlayer != null && !mediaPlayer.isPlaying && !isPaused) {
                 // Si no se está reproduciendo y no está pausado, comenzar desde el principio
                 reproducirAudioTour(tourId, this, mediaPlayer, playTourButton)
                 playTourButton.setImageResource(R.drawable.pause)
-            } else if (!isPaused) {
+            } else if (mediaPlayer != null && !isPaused) {
                 // Si no está pausado, pausarlo y actualizar el texto del botón
                 mediaPlayer.pause()
                 playTourButton.setImageResource(R.drawable.play)
                 isPaused = true
-            } else {
+            } else  {
                 // Si está pausado, reanudar la reproducción
                 mediaPlayer.start()
                 playTourButton.setImageResource(R.drawable.pause)
                 isPaused = false
             }
         }
+
+
 
         pointsOfInterestButton.setOnClickListener {
             // Crear un Intent para abrir la actividad de la lista de puntos de interés
@@ -165,7 +175,8 @@ class TourActivity : AppCompatActivity() {
         }
 
         comButton.setOnClickListener {
-            val intent = Intent(this, CommentActivity::class.java)
+            val intent = Intent(this, CommentList::class.java)
+            intent.putExtra("tourId", tourId)
             startActivity(intent)
 
         }
@@ -213,9 +224,8 @@ class TourActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
     }
-
-
 
 
     private fun logout() {
@@ -225,6 +235,12 @@ class TourActivity : AppCompatActivity() {
         startActivity(Intent(this, Login::class.java))
         finish() // Cerrar la actividad actual
     }
+
+    /*override fun onStop() {
+        super.onStop()
+        // Liberar recursos del MediaPlayer al salir de la actividad
+        mediaPlayer.release()
+    }*/
 
 
 }
