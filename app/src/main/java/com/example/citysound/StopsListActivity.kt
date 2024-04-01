@@ -8,16 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.json.JSONException
 
-class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
+class StopsListActivity : AppCompatActivity(), StopListAdapter.OnItemClickListener {
 
     private lateinit var requestQueue: RequestQueue
     private lateinit var bottomNavigationView: BottomNavigationView
@@ -54,7 +51,7 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
                 R.id.nav_search -> {
                     // Abrir la actividad SearchTour si no está abierta ya
                     if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
-                        startActivity(Intent(this, SearchTour::class.java))
+                        startActivity(Intent(this, SearchTourActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -63,7 +60,7 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
                 R.id.nav_profile -> {
                     // Abrir la actividad Profile si no está abierta ya
                     if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
-                        startActivity(Intent(this, Profile::class.java))
+                        startActivity(Intent(this, ProfileActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -84,7 +81,7 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
         // Limpiar el token de acceso al cerrar sesión
         SessionManager.clearAccessToken(this)
         // Redirigir al usuario a la pantalla de inicio de sesión
-        startActivity(Intent(this, Login::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
         finish() // Cerrar la actividad actual
     }
 
@@ -108,7 +105,7 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
 
                     Log.d("StopsList", "Stops list size: ${stops.size}")
                     // Crear y establecer el adaptador para el RecyclerView
-                    val stopListAdapter = StopListAdapter(stops, this@StopsList)
+                    val stopListAdapter = StopListAdapter(stops, this@StopsListActivity)
                     val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewStops)
                     recyclerView.adapter = stopListAdapter
 
@@ -118,7 +115,7 @@ class StopsList : AppCompatActivity(), StopListAdapter.OnItemClickListener {
             },
             { error ->
                 error.printStackTrace()
-                Toast.makeText(this@StopsList, "Error al obtener la lista de paradas", Toast.LENGTH_SHORT)
+                Toast.makeText(this@StopsListActivity, "Error al obtener la lista de paradas", Toast.LENGTH_SHORT)
                     .show()
             }) {
 

@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.imageview.ShapeableImageView
 import org.json.JSONObject
 
-class EditProfile : AppCompatActivity() {
+class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
 
@@ -111,7 +111,7 @@ class EditProfile : AppCompatActivity() {
                 R.id.nav_search -> {
                     // Abrir la actividad SearchTour si no está abierta ya
                     if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
-                        startActivity(Intent(this, SearchTour::class.java))
+                        startActivity(Intent(this, SearchTourActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -119,7 +119,7 @@ class EditProfile : AppCompatActivity() {
                 R.id.nav_profile -> {
                     // Abrir la actividad Profile si no está abierta ya
                     if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
-                        startActivity(Intent(this, Profile::class.java))
+                        startActivity(Intent(this, ProfileActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -172,7 +172,7 @@ class EditProfile : AppCompatActivity() {
         // Limpiar el token de acceso al cerrar sesión
         SessionManager.clearAccessToken(this)
         // Redirigir al usuario a la pantalla de inicio de sesión
-        startActivity(Intent(this, Login::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
         finish() // Cerrar la actividad actual
     }
 

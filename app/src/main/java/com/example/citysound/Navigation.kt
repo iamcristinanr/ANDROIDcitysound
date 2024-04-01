@@ -3,7 +3,6 @@ package com.example.citysound
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.citysound.databinding.ActivityNavigationBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class Navigation : AppCompatActivity() {
@@ -21,17 +20,17 @@ class Navigation : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.nav_search -> {
                     // Abrir la actividad HomeActivity
-                    startActivity(Intent(this, SearchTour::class.java))
+                    startActivity(Intent(this, SearchTourActivity::class.java))
                     true
                 }
                 R.id.nav_profile -> {
                     // Abrir la actividad HomeActivity
-                    startActivity(Intent(this, Profile::class.java))
+                    startActivity(Intent(this, ProfileActivity::class.java))
                     true
                 }
                 R.id.nav_logout -> {
                     // Abrir la actividad HomeActivity
-                    startActivity(Intent(this, SearchTour::class.java))
+                    startActivity(Intent(this, SearchTourActivity::class.java))
                     true
                 }
 

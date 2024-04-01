@@ -7,24 +7,16 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
-import android.content.SharedPreferences
 import android.util.Log
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.imageview.ShapeableImageView
 import org.json.JSONException
-import org.json.JSONObject
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 
-class Profile: AppCompatActivity() {
+class ProfileActivity: AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
 
@@ -56,13 +48,13 @@ class Profile: AppCompatActivity() {
 
 
         buttonEditProfile.setOnClickListener {
-            val intent = Intent(this, EditProfile::class.java)
+            val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
         }
 
         // Configurar el botón para ir a la actividad SearchTour
         buttonSearchTour.setOnClickListener {
-            val intent = Intent(this, SearchTour::class.java)
+            val intent = Intent(this, SearchTourActivity::class.java)
             startActivity(intent)
         }
 
@@ -75,7 +67,7 @@ class Profile: AppCompatActivity() {
                 R.id.nav_search -> {
                     // Abrir la actividad SearchTour si no está abierta ya
                     if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
-                        startActivity(Intent(this, SearchTour::class.java))
+                        startActivity(Intent(this, SearchTourActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -83,7 +75,7 @@ class Profile: AppCompatActivity() {
                 R.id.nav_profile -> {
                     // Abrir la actividad Profile si no está abierta ya
                     if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
-                        startActivity(Intent(this, Profile::class.java))
+                        startActivity(Intent(this, ProfileActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -115,7 +107,7 @@ class Profile: AppCompatActivity() {
                 nameProfileTextView.text = name
                 bioProfileTextView.text = biography
 
-                Glide.with(this@Profile)
+                Glide.with(this@ProfileActivity)
                     .load(photoprofile)
                     .circleCrop()
                     .into(photoProfileImageView)
@@ -125,7 +117,7 @@ class Profile: AppCompatActivity() {
             }
         },
         { error ->
-            Toast.makeText(this@Profile, "Error al obtener los datos del usuario: ${error.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@ProfileActivity, "Error al obtener los datos del usuario: ${error.message}", Toast.LENGTH_SHORT).show()
             Log.d("ProfileActivity", "Error al obtener los datos del usuario: ${error.message}")
         }) {
 
@@ -150,7 +142,7 @@ class Profile: AppCompatActivity() {
         // Limpiar el token de acceso al cerrar sesión
         SessionManager.clearAccessToken(this)
         // Redirigir al usuario a la pantalla de inicio de sesión
-        startActivity(Intent(this, Login::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
         finish() // Cerrar la actividad actual
     }
 }

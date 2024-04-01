@@ -13,7 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.json.JSONException
 
 
-class SearchTour : AppCompatActivity() {
+class SearchTourActivity : AppCompatActivity() {
     private lateinit var cityEditText: EditText
     private lateinit var tourNameEditText: EditText
     private lateinit var guideNameEditText: EditText
@@ -51,7 +51,7 @@ class SearchTour : AppCompatActivity() {
                 R.id.nav_profile -> {
                     // Abrir la actividad Profile si no está abierta ya
                     if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
-                        startActivity(Intent(this, Profile::class.java))
+                        startActivity(Intent(this, ProfileActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -100,7 +100,7 @@ class SearchTour : AppCompatActivity() {
                     Log.d("SearchTours", "Parámetros de búsqueda - Ciudad: $city, Nombre del tour: $tourName, Nombre del guía: $guideName")
 
                     // Pasar la lista de tours a la actividad PossibleTours
-                    val intent = Intent(this, PossibleTours::class.java)
+                    val intent = Intent(this, PossibleToursActivity::class.java)
                     intent.putParcelableArrayListExtra("tourList", ArrayList(tourList))
                     startActivity(intent)
                 } catch (e: JSONException) {
@@ -134,7 +134,7 @@ class SearchTour : AppCompatActivity() {
         // Limpiar el token de acceso al cerrar sesión
         SessionManager.clearAccessToken(this)
         // Redirigir al usuario a la pantalla de inicio de sesión
-        startActivity(Intent(this, Login::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
         finish() // Cerrar la actividad actual
     }
 

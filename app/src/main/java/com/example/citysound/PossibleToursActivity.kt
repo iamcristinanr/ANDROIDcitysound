@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class PossibleTours : AppCompatActivity() {
+class PossibleToursActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var recyclerView: RecyclerView
@@ -44,7 +44,7 @@ class PossibleTours : AppCompatActivity() {
                 R.id.nav_search -> {
                     // Abrir la actividad SearchTour si no está abierta ya
                     if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
-                        startActivity(Intent(this, SearchTour::class.java))
+                        startActivity(Intent(this, SearchTourActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -53,7 +53,7 @@ class PossibleTours : AppCompatActivity() {
                 R.id.nav_profile -> {
                     // Abrir la actividad Profile si no está abierta ya
                     if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
-                        startActivity(Intent(this, Profile::class.java))
+                        startActivity(Intent(this, ProfileActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -76,7 +76,7 @@ class PossibleTours : AppCompatActivity() {
             // Limpiar el token de acceso al cerrar sesión
             SessionManager.clearAccessToken(this)
             // Redirigir al usuario a la pantalla de inicio de sesión
-            startActivity(Intent(this, Login::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish() // Cerrar la actividad actual
     }
 }

@@ -15,7 +15,7 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONException
 import org.json.JSONObject
 
-class Login: AppCompatActivity() {
+class LoginActivity: AppCompatActivity() {
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
 
@@ -34,13 +34,13 @@ class Login: AppCompatActivity() {
         // Agregar un OnClickListener al TextView
         textViewSignUp.setOnClickListener {
             // Navegar a la actividad de registro
-            val intent = Intent(this, Signup::class.java)
+            val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
 
         textViewReset.setOnClickListener {
             // Navegar a la actividad de registro
-            val intent = Intent(this, ForgotPassword::class.java)
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
 
@@ -79,7 +79,7 @@ class Login: AppCompatActivity() {
                         SessionManager.saveAccessToken(this, accessToken)
                         Log.d("Token", "El token de acceso es: $accessToken")
                         // Iniciar la siguiente actividad
-                        val intent = Intent(this, Profile::class.java)
+                        val intent = Intent(this, ProfileActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {

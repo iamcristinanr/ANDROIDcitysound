@@ -5,7 +5,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
@@ -151,7 +150,7 @@ class StopActivity : AppCompatActivity() {
             R.id.nav_search -> {
                 // Abrir la actividad SearchTour si no está abierta ya
                 if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
-                    startActivity(Intent(this, SearchTour::class.java))
+                    startActivity(Intent(this, SearchTourActivity::class.java))
                     finish() // Cerrar la actividad actual
                 }
                 true
@@ -160,7 +159,7 @@ class StopActivity : AppCompatActivity() {
             R.id.nav_profile -> {
                 // Abrir la actividad Profile si no está abierta ya
                 if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
-                    startActivity(Intent(this, Profile::class.java))
+                    startActivity(Intent(this, ProfileActivity::class.java))
                     finish() // Cerrar la actividad actual
                 }
                 true
@@ -185,7 +184,7 @@ private fun logout() {
     // Limpiar el token de acceso al cerrar sesión
     SessionManager.clearAccessToken(this)
     // Redirigir al usuario a la pantalla de inicio de sesión
-    startActivity(Intent(this, Login::class.java))
+    startActivity(Intent(this, LoginActivity::class.java))
     finish() // Cerrar la actividad actual
 }
 }

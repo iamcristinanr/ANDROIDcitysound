@@ -167,7 +167,7 @@ class TourActivity : AppCompatActivity() {
 
         pointsOfInterestButton.setOnClickListener {
             // Crear un Intent para abrir la actividad de la lista de puntos de interés
-            val intent = Intent(this, StopsList::class.java)
+            val intent = Intent(this, StopsListActivity::class.java)
             intent.putExtra("tour_id", tourId)
             Log.d("TourActivity", "Tour ID: $tourId")
             startActivity(intent)
@@ -175,7 +175,7 @@ class TourActivity : AppCompatActivity() {
         }
 
         comButton.setOnClickListener {
-            val intent = Intent(this, CommentList::class.java)
+            val intent = Intent(this, CommentListActivity::class.java)
             intent.putExtra("tourId", tourId)
             startActivity(intent)
 
@@ -200,7 +200,7 @@ class TourActivity : AppCompatActivity() {
                 R.id.nav_search -> {
                     // Abrir la actividad SearchTour si no está abierta ya
                     if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
-                        startActivity(Intent(this, SearchTour::class.java))
+                        startActivity(Intent(this, SearchTourActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -209,7 +209,7 @@ class TourActivity : AppCompatActivity() {
                 R.id.nav_profile -> {
                     // Abrir la actividad Profile si no está abierta ya
                     if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
-                        startActivity(Intent(this, Profile::class.java))
+                        startActivity(Intent(this, ProfileActivity::class.java))
                         finish() // Cerrar la actividad actual
                     }
                     true
@@ -232,7 +232,7 @@ class TourActivity : AppCompatActivity() {
         // Limpiar el token de acceso al cerrar sesión
         SessionManager.clearAccessToken(this)
         // Redirigir al usuario a la pantalla de inicio de sesión
-        startActivity(Intent(this, Login::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
         finish() // Cerrar la actividad actual
     }
 
