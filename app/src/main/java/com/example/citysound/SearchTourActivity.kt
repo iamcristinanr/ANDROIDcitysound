@@ -14,35 +14,37 @@ import org.json.JSONException
 
 
 class SearchTourActivity : AppCompatActivity() {
+    //Declaramos variables mutables
     private lateinit var cityEditText: EditText
     private lateinit var tourNameEditText: EditText
     private lateinit var guideNameEditText: EditText
     private lateinit var searchButton: Button
-
     private lateinit var bottomNavigationView: BottomNavigationView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_searchtour)
-
+        //Obtenemos los datos del layout
         cityEditText = findViewById(R.id.editTextCity)
         tourNameEditText = findViewById(R.id.editTextTourName)
         guideNameEditText = findViewById(R.id.editTextGuideName)
         searchButton = findViewById(R.id.buttonSearch)
 
+        //Preparamos datos inmutables una vez presionado el boton
         searchButton.setOnClickListener {
             val city = cityEditText.text.toString()
             val tourName = tourNameEditText.text.toString()
             val guideName = guideNameEditText.text.toString()
 
-            // Aquí debes realizar la búsqueda en la API utilizando los valores ingresados por el usuario
+            // Metodo de búsqueda en la API
             searchTours(city, tourName, guideName)
         }
 
+        //-BARRA DE NAVEGACION
         bottomNavigationView = findViewById(R.id.bottom_navigation_view)
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
-            // Manejar las selecciones del menú
+            // Seleccion barra de navegación
             when (menuItem.itemId) {
                 R.id.nav_search -> {
                     // No hacer nada si ya estamos en la actividad SearchTour
@@ -70,18 +72,16 @@ class SearchTourActivity : AppCompatActivity() {
         // URL de la API para realizar la búsqueda
         val apiUrl = "http://192.168.0.10:8000/api/tours/?location=$city&name=$tourName&created_by=$guideName"
 
-
-
-
-        // Crear una solicitud JSON Array usando Volley
+        //JSON Array usando Volley
         val request = object : JsonArrayRequest(
             Method.GET, apiUrl, null,
             { response ->
                 try {
-                    // Manejar la respuesta de la API aquí
+                    // Manejamos respuesta de la API
                     val tourList = mutableListOf<Tour>()
-
+                        // Recorremos cada objeto
                     for (i in 0 until response.length()) {
+                        //Extraemos los datos de la api
                         val tourObject = response.getJSONObject(i)
                         val tourId = tourObject.getInt("id")
                         val tourName = tourObject.getString("name")
@@ -89,17 +89,16 @@ class SearchTourActivity : AppCompatActivity() {
                         val tourImage = tourObject.getString("photo")
                         val guide = tourObject.getString("created_by")
 
-                        // Aquí puedes obtener más atributos del objeto tour si es necesario
 
 
                         val tour = Tour(tourId, tourName, description, tourImage,guide)
                         tourList.add(tour)
                     }
 
-                    Log.d("SearchTours", "URL de la API: $apiUrl")
+                    Log.d("SearchTours", "URL de la busqueda API: $apiUrl")
                     Log.d("SearchTours", "Parámetros de búsqueda - Ciudad: $city, Nombre del tour: $tourName, Nombre del guía: $guideName")
 
-                    // Pasar la lista de tours a la actividad PossibleTours
+                    // Pasamos la lista de tours a la actividad PossibleTours
                     val intent = Intent(this, PossibleToursActivity::class.java)
                     intent.putParcelableArrayListExtra("tourList", ArrayList(tourList))
                     startActivity(intent)
@@ -108,17 +107,18 @@ class SearchTourActivity : AppCompatActivity() {
                 }
             },
             { error ->
-                // Manejar errores de la solicitud HTTP
-                Toast.makeText(this, "Error en la búsqueda: ${error.message}", Toast.LENGTH_SHORT).show()
+                // ERROR de la solicitud HTTP
+                Toast.makeText(this, "Error en la búsqueda: ${error.message}", Toast.LENGTH_LONG).show()
             }) {
 
-            // Sobreescribir el método getHeaders() para incluir el token de autenticación en las cabeceras de la solicitud
+            //SOBREESCRIBIMOS EL METODO GETHEADERS (DE VOLLEY) PARA ENVIAR EL TOKEN DESDE SESION MANAGER
             override fun getHeaders(): MutableMap<String, String> {
+                //Encabezado de la solicitud http
                 val headers = HashMap<String, String>()
                 // Obtener el token de acceso desde SessionManager
                 val sharedPreferences = getSharedPreferences(SessionManager.PREFS_NAME, Context.MODE_PRIVATE)
                 val accessToken = SessionManager.getAccessToken(sharedPreferences)
-                // Agregar el token de autenticación a las cabeceras si está disponible
+                // Agregar el token de autenticación a la cabecera si tenemos token (puede ser nulo)
                 accessToken?.let {
                     headers["Authorization"] = "Token $it"
                 }

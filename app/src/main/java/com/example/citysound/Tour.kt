@@ -3,14 +3,19 @@ package com.example.citysound
 import android.os.Parcel
 import android.os.Parcelable
 
+//Creamos dataclass para pasar sus datos entre activities
 data class Tour(
     val id: Int,
     val tourName: String,
     val description: String,
-    val tourImage: String, // Si deseas incluir una imagen, puedes usar un recurso de imagen
+    val tourImage: String,
     val guide:String,
-    // val pointsOfInterest: List<String> // Si deseas incluir una lista de puntos de interés
+
+    //Implementamos interfaz Parcelable para empaquetar datos entre activities
 ) : Parcelable {
+
+
+    //Contructor para crear tour para la serialización y deserialización
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString() ?: "",
@@ -20,6 +25,7 @@ data class Tour(
 
     )
 
+    //sobreescribimos los metodos necesarios
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeString(tourName)

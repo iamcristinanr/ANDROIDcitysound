@@ -16,87 +16,93 @@ import org.json.JSONException
 import org.json.JSONObject
 
 class LoginActivity: AppCompatActivity() {
+    //variables mutables
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
 
     //onCreate cuando se invoca por primera vez una activity(frontend)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_login) //Implementa el layout
 
+        //Elementos del layout
         emailEditText = findViewById(R.id.emailLogin)
         passwordEditText = findViewById(R.id.passwordLogin)
-//escuchador del boton, agregamos los campos que se guardan y donde.
+
+        // Variables para el cambio de activity
         val loginButton: Button = findViewById(R.id.buttonLogin)
         val textViewSignUp: TextView = findViewById(R.id.notRegistered)
         val textViewReset: TextView = findViewById(R.id.resetPassword)
 
-        // Agregar un OnClickListener al TextView
+        // Agregar un OnClickListener a los TextViews Singup y forgotPassword
         textViewSignUp.setOnClickListener {
-            // Navegar a la actividad de registro
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
-
         textViewReset.setOnClickListener {
-            // Navegar a la actividad de registro
             val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
 
+        // Agregamos escuchador al loginButton
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
-                // Realizar el inicio de sesión
-            performLogin(email, password)
+                // Llamamos al método login y le pasamos los parametros del escuchador
+            login(email, password)
         }
 
     }
 
-
-    private fun performLogin(email: String, password: String) {
+    //Metodo inicio de sesión
+    private fun login(email: String, password: String) {
+        //Endpoint login api
         val apiUrl = "http://192.168.0.10:8000/auth-token/"
 
-
-//VERIFICAR hacer conversiones de string a JSON que le pasamos a la API
-        val jsonBody = JSONObject()
+        // Preparar json para enviar los datos para solicitud https
+        val jsonBody = JSONObject() //Constructor biblioteca Android
         //corregir en la api es username pero deberia ser email
         jsonBody.put("username", email)
         jsonBody.put("password", password)
 
+        //Verificamos si el cuerpo json por logs es correcto
         Log.d("Request JSON", jsonBody.toString())
 
+        // Se envia una peticion Post VOLLEY
         val request = JsonObjectRequest(
             Request.Method.POST, apiUrl, jsonBody,
 
-
+            // Respuesta Api
             { response ->
                 try {
+                    //guardamos "token"
                     val accessToken = response.getString("token")
                     // Verificar si el token de acceso es válido
                     if (accessToken.isNotEmpty()) {
-                        // Guardar el token de acceso
+                        // Guardar el token de acceso - CLASE MANEJO DE TOCKEN SesionManager
                         SessionManager.saveAccessToken(this, accessToken)
+                        //Ver token por pantalla
                         Log.d("Token", "El token de acceso es: $accessToken")
-                        // Iniciar la siguiente actividad
+                        // Iniciar la siguiente actividad Profile
                         val intent = Intent(this, ProfileActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        // Mostrar mensaje de error si no se recibió un token válido
+                        // Mostrar mensaje de error al usuario si no se recibió un token válido
                         Toast.makeText(this, "Token de acceso no válido", Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: JSONException) {
                     e.printStackTrace()
-                    Toast.makeText(this, "Credenciales incorrectas. Inténtalo de nuevo.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Json incorrecto.", Toast.LENGTH_SHORT).show()
                 }
             },
             { error ->
                 error.printStackTrace()
-                Toast.makeText(this, "Error de conexión. Inténtalo de nuevo más tarde.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Credenciales incorrectas. Inténtalo de nuevo", Toast.LENGTH_LONG).show()
             }
         )
 
+        //Creamos cola solicitud Volley
         Volley.newRequestQueue(this).add(request)
         }
     }
