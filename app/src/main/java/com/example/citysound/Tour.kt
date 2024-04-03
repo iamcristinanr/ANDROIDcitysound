@@ -9,7 +9,7 @@ data class Tour(
     val tourName: String,
     val description: String,
     val tourImage: String,
-    val guide:String,
+    val guideId: Int,
 
     //Implementamos interfaz Parcelable para empaquetar datos entre activities
 ) : Parcelable {
@@ -21,7 +21,7 @@ data class Tour(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readString() ?: "",
+        parcel.readInt() ,
 
     )
 
@@ -31,7 +31,7 @@ data class Tour(
         parcel.writeString(tourName)
         parcel.writeString(description)
         parcel.writeString(tourImage)
-        parcel.writeString(guide)
+        parcel.writeInt(guideId)
 
     }
 

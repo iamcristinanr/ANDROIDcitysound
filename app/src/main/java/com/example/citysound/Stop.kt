@@ -3,6 +3,7 @@ package com.example.citysound
 import android.os.Parcel
 import android.os.Parcelable
 
+//Implementamos data class para pasar datos entre actividades y serializar datos
 data class Stop(
     val id: Int,
     val name: String,

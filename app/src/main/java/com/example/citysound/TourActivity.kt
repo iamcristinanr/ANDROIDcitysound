@@ -37,7 +37,7 @@ class TourActivity : AppCompatActivity() {
         val tourName = intent.getStringExtra("tourName")
         val description = intent.getStringExtra("tourDescription")
         val tourImage = intent.getStringExtra("tourImage")
-        val guideId = intent.getStringExtra("guideId")
+        val guideId = intent.getIntExtra("guideId", -1)
         Log.d("TourActivity", "Valor de created_by: $guideId")
         Log.d("TourActivity", "Valor de tourId: $tourId")
 
@@ -100,7 +100,7 @@ class TourActivity : AppCompatActivity() {
                         Toast.makeText(context, "Error preparando media player", Toast.LENGTH_LONG).show()
                     }
 
-                    // Manejar el progreso en la seekbar
+                    // Manejar el progreso de la seekbar
                     seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                             if (fromUser) {
@@ -158,12 +158,12 @@ class TourActivity : AppCompatActivity() {
                 //actualizar imagen del botón
                 playTourButton.setImageResource(R.drawable.pause)
             } else if (mediaPlayer != null && !isPaused) {
-                // Si no está pausado, pausarlo y actualizar imagen del botón
+                // Si no está pausado pausarlo y actualizar imagen del botón
                 mediaPlayer.pause()
                 playTourButton.setImageResource(R.drawable.play)
                 isPaused = true
             } else  {
-                // Si está pausado, reanudar la reproducción
+                // Si está pausado reanudar la reproducción
                 mediaPlayer.start()
                 playTourButton.setImageResource(R.drawable.pause)
                 isPaused = false
@@ -189,14 +189,16 @@ class TourActivity : AppCompatActivity() {
         }
             //Abrir actividad profile del guia y pasar idguia
         guideButton.setOnClickListener {
+
             if (guideId != null) {
                 val intent = Intent(this, ProfileGuide::class.java)
                 intent.putExtra("guideId", guideId)
                 startActivity(intent)
-            } //else {
-                Log.e("TourActivity", "guideId es nulo al intentar iniciar ProfileGuide")
-                // Aquí puedes manejar el caso en el que guideId es nulo
-           // }
+                Log.e("TourActivity", "guideId NO es nulo al intentar iniciar ProfileGuide $guideId")
+            } else {
+                Log.e("TourActivity", "guideId es nulo al intentar iniciar ProfileGuide $guideId")
+
+            }
         }
 
         //BARRA DE NAVEGACION - MEJORAR

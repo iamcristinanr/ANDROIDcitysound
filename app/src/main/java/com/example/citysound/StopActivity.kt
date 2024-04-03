@@ -20,23 +20,26 @@ import java.io.IOException
 import java.util.Timer
 import java.util.TimerTask
 
+
 class StopActivity : AppCompatActivity() {
+
+    //Variables mutables
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var bottomNavigationView: BottomNavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stops)
 
+        //Obtenemos los datos del StopslistActivity
         val tourId = intent.getIntExtra("tourId", -1)
         Log.d("StopsList", "tourId in stopActivity: $tourId")
-        lateinit var bottomNavigationView: BottomNavigationView
-        // Obtener la parada seleccionada del Intent
         val stopId = intent.getIntExtra("stopId", -1)
         val stopName = intent.getStringExtra("stopName")
         val stopDescription = intent.getStringExtra("stopDescription")
-        //val stopActivity = intent.getParcelableExtra<Stop>("stop")
         val stopImage = intent.getStringExtra("stopImage")
 
-        //val tourId = intent.getIntExtra("tourId", -1)
-        // Mostrar los detalles de la parada en la interfaz de usuario
+        // Mostrar los detalles de stop en el layout
         val nameTextView = findViewById<TextView>(R.id.stopNameTextView)
         val descriptionTextView = findViewById<TextView>(R.id.stopDescriptionTextView)
         val stopImageView = findViewById<ImageView>(R.id.stopImageView)
@@ -52,11 +55,12 @@ class StopActivity : AppCompatActivity() {
             //.error(R.drawable.error_image) // Opcional: Imagen de error si falla la carga
             .into(stopImageView)
 
-        val mediaPlayer = MediaPlayer()
-
         var isPaused = false
 
+         mediaPlayer = MediaPlayer()
+
         fun reproducirAudioTour(tourId: Int, context: Context, mediaPlayer: MediaPlayer, playTourButton: ImageButton) {
+            //endpoint del tour para obtener los datos (paradas)
             val url = "http://192.168.0.10:8000/api/tours/$tourId/stops/$stopId"
 
             // Configurar una cola de solicitudes Volley
@@ -79,7 +83,7 @@ class StopActivity : AppCompatActivity() {
                         Toast.makeText(context, "Error preparando el reproductor de audio", Toast.LENGTH_SHORT).show()
                     }
 
-                    // Manejar el cambio de progreso en la seekbar
+                    // Manejar el progreso de la seekbar
                     seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                             if (fromUser) {
@@ -99,28 +103,30 @@ class StopActivity : AppCompatActivity() {
                         }
                     }, 0, 1000)
 
-                    // Iniciar la reproducción automáticamente
+                    // Iniciar la reproducción
                     mediaPlayer.start()
                 },
                 { error ->
                     Toast.makeText(context, "Error al obtener detalles del tour: ${error.message}", Toast.LENGTH_SHORT).show()
                 }) {
+
+                //SOBREESCRIBIMOS EL METODO GETHEADERS (DE VOLLEY) PARA ENVIAR EL TOKEN DESDE SESION MANAGER
                 override fun getHeaders(): MutableMap<String, String> {
+                    //Encabezado de la solicitud http
                     val headers = HashMap<String, String>()
                     // Obtener el token de acceso desde SessionManager
-                    val sharedPreferences = context.getSharedPreferences(SessionManager.PREFS_NAME, Context.MODE_PRIVATE)
+                    val sharedPreferences = getSharedPreferences(SessionManager.PREFS_NAME, Context.MODE_PRIVATE)
                     val accessToken = SessionManager.getAccessToken(sharedPreferences)
-                    // Agregar el token de autenticación a las cabeceras si está disponible
+                    // Agregar el token de autenticación a la cabecera si tenemos token (puede ser nulo)
                     accessToken?.let {
                         headers["Authorization"] = "Token $it"
                     }
                     return headers
                 }
 
-
             }
 
-            // Agregar la solicitud a la cola de solicitudes Volley
+            // Agregar la solicitud a la cola
             requestQueue.add(jsonObjectRequest)
         }
         playStopButton.setOnClickListener {
@@ -129,58 +135,54 @@ class StopActivity : AppCompatActivity() {
                 reproducirAudioTour(tourId, this, mediaPlayer, playStopButton)
                 playStopButton.setImageResource(R.drawable.pause)
             } else if (!isPaused) {
-                // Si no está pausado, pausarlo y actualizar el texto del botón
+                // Si no está pausado pausarlo y actualizar imagen del boton
                 mediaPlayer.pause()
                 playStopButton.setImageResource(R.drawable.play)
                 isPaused = true
             } else {
-                // Si está pausado, reanudar la reproducción
+                // Si está pausado reanudar la reproducción
                 mediaPlayer.start()
                 playStopButton.setImageResource(R.drawable.pause)
                 isPaused = false
             }
         }
 
-    bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+            //BARRA DE NAVEGACION - MEJORAR
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
 
-    bottomNavigationView.setOnItemSelectedListener { menuItem ->
-
-        // Manejar las selecciones del menú
-        when (menuItem.itemId) {
-            R.id.nav_search -> {
-                // Abrir la actividad SearchTour si no está abierta ya
-                if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
-                    startActivity(Intent(this, SearchTourActivity::class.java))
-                    finish() // Cerrar la actividad actual
+            // Seleccion barra de navegación
+            when (menuItem.itemId) {
+                R.id.nav_search -> {
+                    // Abrir la actividad SearchTour si no está abierta ya
+                    if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
+                        startActivity(Intent(this, SearchTourActivity::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
                 }
-                true
-            }
-
-            R.id.nav_profile -> {
-                // Abrir la actividad Profile si no está abierta ya
-                if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
-                    startActivity(Intent(this, ProfileActivity::class.java))
-                    finish() // Cerrar la actividad actual
+                R.id.nav_profile -> {
+                    // Abrir la actividad Profile si no está abierta ya
+                    if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
+                        startActivity(Intent(this, ProfileActivity::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
                 }
-                true
-            }
+                R.id.nav_logout -> {
+                    // Cerrar sesión
+                    logOut()
+                    true
+                }
 
-            R.id.nav_logout -> {
-                // Abrir la actividad HomeActivity
-                logout()
-                true
+                else -> false
             }
-
-            else -> false
-        }
     }
 }
 
 
 
-
-
-private fun logout() {
+private fun logOut() {
     // Limpiar el token de acceso al cerrar sesión
     SessionManager.clearAccessToken(this)
     // Redirigir al usuario a la pantalla de inicio de sesión

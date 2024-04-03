@@ -87,11 +87,11 @@ class SearchTourActivity : AppCompatActivity() {
                         val tourName = tourObject.getString("name")
                         val description = tourObject.getString("description")
                         val tourImage = tourObject.getString("photo")
-                        val guide = tourObject.getString("created_by")
+                        val guideId = tourObject.getInt("created_by")
 
 
 
-                        val tour = Tour(tourId, tourName, description, tourImage,guide)
+                        val tour = Tour(tourId, tourName, description, tourImage,guideId)
                         tourList.add(tour)
                     }
 
