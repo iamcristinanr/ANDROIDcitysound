@@ -56,6 +56,7 @@ class TourAdapter(
             intent.putExtra("tourDescription", selectedTour.description)
             intent.putExtra("tourImage", selectedTour.tourImage)
             intent.putExtra("guideId", selectedTour.guideId)
+            intent.putExtra("duration", selectedTour.duration)
             context.startActivity(intent)
         }
     }

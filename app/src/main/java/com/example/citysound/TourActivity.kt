@@ -38,6 +38,7 @@ class TourActivity : AppCompatActivity() {
         val description = intent.getStringExtra("tourDescription")
         val tourImage = intent.getStringExtra("tourImage")
         val guideId = intent.getIntExtra("guideId", -1)
+        val duration = intent.getIntExtra("duration", -1)
         Log.d("TourActivity", "Valor de created_by: $guideId")
         Log.d("TourActivity", "Valor de tourId: $tourId")
 
@@ -45,10 +46,12 @@ class TourActivity : AppCompatActivity() {
         val tourNameTextView = findViewById<TextView>(R.id.tourNameTextView)
         val descriptionTextView = findViewById<TextView>(R.id.descriptionTextView)
         val tourImageView = findViewById<ImageView>(R.id.tourImageView)
+        val durationTextView = findViewById<TextView>(R.id.durationTour)
 
         //Configuramos el layout con lso datos del tour
         tourNameTextView.text = tourName
         descriptionTextView.text = description
+        durationTextView.text = duration.toString()
 
         Glide.with(this)
             .load(tourImage)
