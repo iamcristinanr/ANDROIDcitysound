@@ -2,12 +2,16 @@ package com.example.citysound
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -16,6 +20,8 @@ import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.imageview.ShapeableImageView
 import org.json.JSONObject
+import android.Manifest
+import android.app.Activity
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -23,8 +29,11 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var requestQueue: RequestQueue
     private var userurl: String = ""
-    private lateinit var photoProfile: ShapeableImageView
-    private lateinit var buttonChangePhoto: ImageButton
+    //private lateinit var photoProfile: ShapeableImageView
+    //private lateinit var buttonChangePhoto: ImageButton
+
+    //codigo de solicitud abrir galeria
+    //private val GALLERY_REQUEST_CODE = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +42,34 @@ class EditProfileActivity : AppCompatActivity() {
         requestQueue = Volley.newRequestQueue(this)
 
         //asignar datos a los elementos del layout
-        val photoProfile = findViewById<ShapeableImageView>(R.id.photoprofile)
-        val editPhotoProfile= findViewById<ImageButton>(R.id.buttonChangePhoto)
+        //photoProfile = findViewById(R.id.photoprofile)
+        //val editPhotoProfile= findViewById<ImageButton>(R.id.buttonChangePhoto)
         val editTextUsername = findViewById<EditText>(R.id.editTextUsername)
         val editTextBio = findViewById<EditText>(R.id.editTextBio)
         val buttonSave = findViewById<Button>(R.id.buttonSave)
 
         // Obtener la URL, es un parametro del usuario para actualizar el perfil
         getUrl()
+
+
+        // Boton que cambia la foto de perfil
+        /*editPhotoProfile.setOnClickListener {
+            // Solicitar permisos de almacenamiento externo si no están concedidos
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    GALLERY_REQUEST_CODE
+                )
+            } else {
+                openGallery()
+            }
+        }*/
+
 
 
         // Boton que guarda los datos
@@ -58,16 +87,15 @@ class EditProfileActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
-
-
             // Crear el objeto JSON con los datos actualizados
             val params = JSONObject()
+
             params.put("name", newUsername)
             params.put("biography", newBio)
 
             // Crear la solicitud PUT que envia los datos para actualizar la API
             val request = object : JsonObjectRequest(
-                Request.Method.PUT, userurl, params,
+                Request.Method.PATCH, userurl, params,
                 Response.Listener { response ->
                     // Manejar la respuesta de la API
                     Toast.makeText(this, "Perfil actualizado correctamente", Toast.LENGTH_SHORT)
@@ -179,6 +207,31 @@ class EditProfileActivity : AppCompatActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish() // Cerrar la actividad actual
     }
+/*
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { uri ->
+                photoProfile.setImageURI(uri)
 
 
-}
+                val realPath = RealPathUtil.getRealPathFromURI(this, uri)
+                if (realPath != null) {
+
+                    // uploadImage(realPath)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "No se pudo obtener la ruta de la imagen",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }*/
+        }
+
+
