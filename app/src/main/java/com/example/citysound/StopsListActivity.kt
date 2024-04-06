@@ -16,6 +16,7 @@ import org.json.JSONException
 
 class StopsListActivity : AppCompatActivity(), StopListAdapter.OnItemClickListener {
 
+    //Variables mutables
     private lateinit var requestQueue: RequestQueue
     private lateinit var bottomNavigationView: BottomNavigationView
     private var tourId: Int = -1
@@ -26,23 +27,23 @@ class StopsListActivity : AppCompatActivity(), StopListAdapter.OnItemClickListen
 
         requestQueue = Volley.newRequestQueue(this)
 
-        // Configurar RecyclerView
+        // Configurar layout RecyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewStops)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // obtenemos tourId de tourActivity
         tourId = intent.getIntExtra("tour_id", -1)
 
         if (tourId != -1) {
-            Log.d("TourActivity", "Tour ID: $tourId")
             Log.d("StopsList", "tourId in onItemClick: $tourId")
             val url = "http://192.168.0.10:8000/api/tours/$tourId/stops/"
-            ApiRequest(url)
+            getDataStop(url)
         } else {
-            Toast.makeText(this, "Tour ID no válido", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Tour ID no válido $tourId", Toast.LENGTH_SHORT).show()
         }
 
 
-
+        //BARRA DE NAVEGACION
         bottomNavigationView = findViewById(R.id.bottom_navigation_view)
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
 
@@ -71,9 +72,10 @@ class StopsListActivity : AppCompatActivity(), StopListAdapter.OnItemClickListen
                     logout()
                     true
                 }
-
                 else -> false
             }
+
+
         }
     }
 
@@ -85,21 +87,25 @@ class StopsListActivity : AppCompatActivity(), StopListAdapter.OnItemClickListen
         finish() // Cerrar la actividad actual
     }
 
-    private fun ApiRequest(url: String) {
+    private fun getDataStop(url: String) {
+        //Solicitud get para obtener la lista de paradas
         val jsonArrayRequest = object : JsonArrayRequest(Method.GET, url, null,
             { response ->
                 try {
                     val stops = mutableListOf<Stop>()
 
+                    //Itera cada stopObjet de la petición
                     for (i in 0 until response.length()) {
                         val stopObject = response.getJSONObject(i)
                         Log.d("Response", "JSON Object at position $i: $stopObject")
+                       //Crea objeto stop a partir datos del json
                         val stop = Stop(
                             stopObject.getInt("id"),
                             stopObject.getString("name"),
                             stopObject.getString("description"),
                             stopObject.getString("image"),
                         )
+                        //Agregar stop a la lista
                         stops.add(stop)
                     }
 
@@ -133,7 +139,7 @@ class StopsListActivity : AppCompatActivity(), StopListAdapter.OnItemClickListen
             }
         }
 
-        // Agregar la solicitud a la cola de solicitudes Volley
+        // Agregar la solicitud a la cola
         requestQueue.add(jsonArrayRequest)
     }
 
@@ -146,6 +152,7 @@ class StopsListActivity : AppCompatActivity(), StopListAdapter.OnItemClickListen
     override fun onItemClick(stop: Stop) {
         // Abrir la actividad de detalles de la parada
         val intent = Intent(this, StopActivity::class.java)
+        //Enviamos los datos al StopActivity
         intent.putExtra("tourId", tourId)
         Log.d("StopsList", "tourId in onItemClick: $tourId")
         intent.putExtra("stopId", stop.id)

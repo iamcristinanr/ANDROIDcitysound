@@ -123,7 +123,6 @@ class StopActivity : AppCompatActivity() {
                     }
                     return headers
                 }
-
             }
 
             // Agregar la solicitud a la cola

@@ -19,14 +19,11 @@ import org.json.JSONObject
 
 class EditProfileActivity : AppCompatActivity() {
 
+    //variables mutables
     private lateinit var bottomNavigationView: BottomNavigationView
-
     private lateinit var requestQueue: RequestQueue
-
     private var userurl: String = ""
-
     private lateinit var photoProfile: ShapeableImageView
-
     private lateinit var buttonChangePhoto: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,17 +32,18 @@ class EditProfileActivity : AppCompatActivity() {
 
         requestQueue = Volley.newRequestQueue(this)
 
+        //asignar datos a los elementos del layout
         val photoProfile = findViewById<ShapeableImageView>(R.id.photoprofile)
         val editPhotoProfile= findViewById<ImageButton>(R.id.buttonChangePhoto)
         val editTextUsername = findViewById<EditText>(R.id.editTextUsername)
         val editTextBio = findViewById<EditText>(R.id.editTextBio)
         val buttonSave = findViewById<Button>(R.id.buttonSave)
 
-        // Obtener el ID del usuario del servidor antes de enviar la solicitud de actualización del perfil
+        // Obtener la URL, es un parametro del usuario para actualizar el perfil
         getUrl()
 
 
-
+        // Boton que guarda los datos
         buttonSave.setOnClickListener {
             val newUsername = editTextUsername.text.toString()
             val newBio = editTextBio.text.toString()
@@ -55,17 +53,19 @@ class EditProfileActivity : AppCompatActivity() {
                 Toast.makeText(this, "No se pudo obtener el Url del usuario", Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
+            } else {
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
             }
 
-            // Construir la URL de la API para actualizar el perfil con el ID del usuario
-            val url = userurl
+
 
             // Crear el objeto JSON con los datos actualizados
             val params = JSONObject()
             params.put("name", newUsername)
             params.put("biography", newBio)
 
-            // Crear la solicitud PUT
+            // Crear la solicitud PUT que envia los datos para actualizar la API
             val request = object : JsonObjectRequest(
                 Request.Method.PUT, userurl, params,
                 Response.Listener { response ->
@@ -102,11 +102,11 @@ class EditProfileActivity : AppCompatActivity() {
             requestQueue.add(request)
         }
 
-
+            // BARRA DE NAVEGACION - MEJORAR
         bottomNavigationView = findViewById(R.id.bottom_navigation_view)
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
 
-            // Manejar las selecciones del menú
+            // Seleccion barra de navegación
             when (menuItem.itemId) {
                 R.id.nav_search -> {
                     // Abrir la actividad SearchTour si no está abierta ya
@@ -126,17 +126,17 @@ class EditProfileActivity : AppCompatActivity() {
                 }
                 R.id.nav_logout -> {
                     // Abrir la actividad HomeActivity
-                    logout()
+                    logOut()
                     true
                 }
-
                 else -> false
             }
+
         }
     }
 
 
-
+// METODO PARA OBTENER LA URL DEL PERFIL LOGADO
     private fun getUrl() {
         val url = "http://192.168.0.10:8000/api/users/me/"
 
@@ -152,13 +152,15 @@ class EditProfileActivity : AppCompatActivity() {
                 error.printStackTrace()
             }) {
 
+
+            //SOBREESCRIBIMOS EL METODO GETHEADERS (DE VOLLEY) PARA ENVIAR EL TOKEN DESDE SESION MANAGER
             override fun getHeaders(): MutableMap<String, String> {
+                //Encabezado de la solicitud http
                 val headers = HashMap<String, String>()
-                // Obtener el token de acceso desde SharedPreferences
-                val sharedPreferences =
-                    getSharedPreferences(SessionManager.PREFS_NAME, Context.MODE_PRIVATE)
+                // Obtener el token de acceso desde SessionManager
+                val sharedPreferences = getSharedPreferences(SessionManager.PREFS_NAME, Context.MODE_PRIVATE)
                 val accessToken = SessionManager.getAccessToken(sharedPreferences)
-                // Agregar el token de autenticación a las cabeceras si está disponible
+                // Agregar el token de autenticación a la cabecera si tenemos token (puede ser nulo)
                 accessToken?.let {
                     headers["Authorization"] = "Token $it"
                 }
@@ -168,8 +170,10 @@ class EditProfileActivity : AppCompatActivity() {
 
         requestQueue.add(request)
     }
-    private fun logout() {
-        // Limpiar el token de acceso al cerrar sesión
+
+    //Metodo de la barra de navegación log out
+    private fun logOut() {
+        // Limpiar el token de acceso
         SessionManager.clearAccessToken(this)
         // Redirigir al usuario a la pantalla de inicio de sesión
         startActivity(Intent(this, LoginActivity::class.java))

@@ -171,27 +171,32 @@ class TourActivity : AppCompatActivity() {
         }
 
 
-
+        //BOTON PUNTOS DE INTERES STOPS
         pointsOfInterestButton.setOnClickListener {
             // Abrir la actividad de la lista de puntos de interés y pasamos id tour
             val intent = Intent(this, StopsListActivity::class.java)
+            //Pasamos tourId
             intent.putExtra("tour_id", tourId)
             Log.d("TourActivity", "Tour ID: $tourId")
             startActivity(intent)
-
         }
+
+
+            //BOTON COMENTARIOS
             // Abrir la actividad de los comentarios y pasamos id tour
         comButton.setOnClickListener {
             val intent = Intent(this, CommentListActivity::class.java)
+            //Pasamos tourId
             intent.putExtra("tourId", tourId)
             startActivity(intent)
-
         }
+
+            //BOTON GUIA
             //Abrir actividad profile del guia y pasar idguia
         guideButton.setOnClickListener {
-
             if (guideId != null) {
                 val intent = Intent(this, ProfileGuide::class.java)
+                //Enviamos el guideId
                 intent.putExtra("guideId", guideId)
                 startActivity(intent)
                 Log.e("TourActivity", "guideId NO es nulo al intentar iniciar ProfileGuide $guideId")
