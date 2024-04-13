@@ -23,7 +23,7 @@ data class Tour(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readInt() ,
-        parcel.readInt() ,
+        parcel.readInt()
 
     )
 
@@ -34,7 +34,7 @@ data class Tour(
         parcel.writeString(description)
         parcel.writeString(tourImage)
         parcel.writeInt(guideId)
-
+        parcel.writeInt(duration)
     }
 
     override fun describeContents(): Int {

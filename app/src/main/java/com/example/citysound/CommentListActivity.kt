@@ -13,6 +13,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import layout.CommentListAdapter
 import org.json.JSONException
 
@@ -23,6 +24,7 @@ class CommentListActivity : AppCompatActivity() {
     private var commentId: Int = -1
     private lateinit var requestQueue: RequestQueue
     private val commentsList = mutableListOf<Comment>()
+    private lateinit var bottomNavigationView: BottomNavigationView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +58,42 @@ class CommentListActivity : AppCompatActivity() {
             intent.putExtra("tourId", tourId)
             startActivity(intent)
         }
+
+
+        //BARRA DE NAVEGACION - MEJORAR
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+
+            // Seleccion barra de navegación
+            when (menuItem.itemId) {
+                R.id.nav_search -> {
+                    // Abrir la actividad SearchTour si no está abierta ya
+                    if (!this::class.java.simpleName.equals("SearchTour", ignoreCase = true)) {
+                        startActivity(Intent(this, SearchTourActivity::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+
+                R.id.nav_profile -> {
+                    // Abrir la actividad Profile si no está abierta ya
+                    if (!this::class.java.simpleName.equals("Profile", ignoreCase = true)) {
+                        startActivity(Intent(this, ProfileActivity::class.java))
+                        finish() // Cerrar la actividad actual
+                    }
+                    true
+                }
+
+                R.id.nav_logout -> {
+                    // Cerrar sesión
+                    logOut()
+                    true
+                }
+
+                else -> false
+            }
+        } //BARRA DE NAVEGACION - MEJORAR
+
     }
 
     // Metodo para obtener los datos de los comentarios
@@ -108,6 +146,14 @@ class CommentListActivity : AppCompatActivity() {
 
         // Agregar la solicitud a la cola
         requestQueue.add(request)
+    }
+
+    private fun logOut() {
+        // Limpiar el token de acceso
+        SessionManager.clearAccessToken(this)
+        // Redirigir al usuario a la pantalla de inicio de sesión
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish() // Cerrar la actividad actual
     }
 
 }

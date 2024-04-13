@@ -28,7 +28,7 @@ class ProfileGuide : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.e("ProfileGuide", "guideId $guideId")
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
+        setContentView(R.layout.activity_profileguide)
 
         //obtenemos desde TourActivity el guideId
         guideId = intent.getIntExtra("guideId", -1)
