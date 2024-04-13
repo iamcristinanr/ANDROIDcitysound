@@ -209,6 +209,12 @@ class TourActivity : AppCompatActivity() {
             }
         }
 
+        mapsButton.setOnClickListener {
+            val intent = Intent(this, MapActivity::class.java)
+            startActivity(intent)
+
+        }
+
         //BARRA DE NAVEGACION - MEJORAR
         bottomNavigationView = findViewById(R.id.bottom_navigation_view)
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
