@@ -209,8 +209,10 @@ class TourActivity : AppCompatActivity() {
             }
         }
 
+        //BOTON MAPA
         mapsButton.setOnClickListener {
             val intent = Intent(this, MapActivity::class.java)
+            intent.putExtra("tourId", tourId)
             startActivity(intent)
 
         }

@@ -104,9 +104,12 @@ class StopsListActivity : AppCompatActivity(), StopListAdapter.OnItemClickListen
                             stopObject.getString("name"),
                             stopObject.getString("description"),
                             stopObject.getString("image"),
+
                         )
                         //Agregar stop a la lista
                         stops.add(stop)
+
+
                     }
 
                     Log.d("StopsList", "Stops list size: ${stops.size}")
@@ -162,6 +165,7 @@ class StopsListActivity : AppCompatActivity(), StopListAdapter.OnItemClickListen
 
         startActivity(intent)
     }
+
 }
 
     // Esta es una función de ejemplo que devuelve una lista de paradas de ejemplo

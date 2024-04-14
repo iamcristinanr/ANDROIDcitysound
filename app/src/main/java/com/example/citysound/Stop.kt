@@ -24,6 +24,7 @@ data class Stop(
         parcel.writeString(name)
         parcel.writeString(description)
         parcel.writeString(image)
+
     }
 
     override fun describeContents(): Int {
