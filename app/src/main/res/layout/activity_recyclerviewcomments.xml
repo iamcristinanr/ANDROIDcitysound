@@ -21,7 +21,9 @@
         android:layout_margin="100dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="100dp"
-        android:text="Leave a Comment"
+        android:text="DEJAR COMENTARIO"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
          />

@@ -2,15 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="Profile"
+        android:title="Perfil"
         android:id="@+id/nav_profile"
-        android:icon="@drawable/profile"/>
+        android:icon="@drawable/profile"
+        />
     <item
-        android:title="Search"
+        android:title="Buscar"
         android:id="@+id/nav_search"
         android:icon="@drawable/search"/>
     <item
-        android:title="Log Out"
+        android:title="Salir"
         android:id="@+id/nav_logout"
         android:icon="@drawable/logout"/>
 

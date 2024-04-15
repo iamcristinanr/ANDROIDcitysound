@@ -23,7 +23,7 @@
             android:id="@+id/stopNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stop Name"
+            android:text="Nombre de parada"
             android:textSize="18sp"
             android:textStyle="bold"
             android:padding="8dp" />
@@ -32,7 +32,7 @@
             android:id="@+id/stopDescriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stop Description"
+            android:text="Descripción de parada"
             android:textSize="14sp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"

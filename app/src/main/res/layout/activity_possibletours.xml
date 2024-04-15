@@ -23,7 +23,7 @@
             android:id="@+id/textViewTourName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tour Name"
+            android:text="Nombre de tour"
             android:textSize="18sp"
             android:textStyle="bold"
             android:padding="8dp" />
@@ -34,7 +34,7 @@
             android:id="@+id/textViewDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tour Description"
+            android:text="Descripción de tour"
             android:textSize="14sp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
